@@ -1,0 +1,5 @@
+dependencies {
+    compile group: 'org.spigotmc', name: 'spigot', version: '1.11-R0.1-SNAPSHOT'
+    compile group: 'co.aikar', name: 'taskchain-bukkit', version: '3.4.3'
+    compile project(':util')
+}

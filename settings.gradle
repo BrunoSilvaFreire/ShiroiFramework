@@ -1,0 +1,8 @@
+include ':craft', ':craft:craft-api', ':craft:craft-internal',
+        ':ui',
+        ':craft-ui',
+        ':util',
+        ":effect",
+        ":schematic", ":schematic:bukkit", ":schematic:core"
+rootProject.name = 'shiroi-framework'
+

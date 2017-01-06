@@ -1,0 +1,78 @@
+allprojects {
+    apply plugin: 'idea'
+    group 'me.ddevil'
+    version '2.4.0-SNAPSHOT'
+}
+buildscript {
+    ext.kotlin_version = '1.0.5-2'
+
+    repositories {
+        mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "com.github.jengelman.gradle.plugins:shadow:1.2.3"
+    }
+}
+def notToPublish = Arrays.asList(["server", "commons"] as String[])
+
+setup(rootProject)
+def setup(project) {
+    if (project.childProjects.isEmpty()) {
+        println "Applying plugins to project $project.name parent $project.parent"
+
+        project.plugins.apply('maven-publish')
+        project.plugins.apply('java')
+        project.plugins.apply('kotlin')
+        project.plugins.apply('idea')
+        project.sourceCompatibility = 1.8
+        project.targetCompatibility = 1.8
+        project.compileJava.options.encoding = 'UTF-8'
+
+        project.publishing {
+            publications {
+                mavenJava(MavenPublication) {
+                    from project.components.java
+                    artifactId "shiroi-framework-$project.name"
+                }
+            }
+            repositories {
+                maven {
+                    credentials {
+                        username user
+                        password pass
+                    }
+                    url repo
+                }
+            }
+
+        }
+        project.repositories {
+            mavenCentral()
+            mavenLocal()
+            maven { url 'http://repo.dmulloy2.net/content/groups/public/' }
+            maven { url "https://hub.spigotmc.org/nexus/content/repositories/snapshots/" }
+            maven { url 'http://repo.dmulloy2.net/content/groups/public/' }
+            maven { url "http://repo.mvdw-software.com/content/groups/public/" }
+            maven { url 'http://repo.extendedclip.com/content/repositories/placeholderapi/' };
+            maven { url 'http://149.56.97.155:8081/repository/maven-snapshots/' }
+            maven { url 'http://nexus.hc.to/content/repositories/pub_releases' }
+            maven { url 'http://maven.angry.com.au/release' }
+            maven { url 'http://ci.emc.gs/nexus/content/groups/aikar/' }
+        }
+
+        project.dependencies {
+            compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+        }
+    } else {
+        println 'Found sub projects in project: ' + project.name
+        println "Parent = $project.parent"
+        println project.childProjects
+        project.childProjects.each { p ->
+            setup(p.value)
+        }
+    }
+}
