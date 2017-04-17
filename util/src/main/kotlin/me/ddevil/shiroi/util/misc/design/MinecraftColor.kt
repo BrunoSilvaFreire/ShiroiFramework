@@ -1,14 +1,18 @@
 package me.ddevil.shiroi.util.misc.design
 
 import com.google.common.collect.Maps
-import java.awt.*
+import java.awt.Color
 import java.util.regex.Pattern
-import kotlin.properties.Delegates
 
 /**
  * Created by bruno on 11/10/2016.
  */
-enum class MinecraftColor {
+enum class MinecraftColor
+/**
+ * Checks if this code is a format code as opposed to a design code.
+
+ * @return whether this MinecraftColor is a format code
+ */(code: Char, val color: Color) {
     /**
      * Represents black
      */
@@ -86,69 +90,14 @@ enum class MinecraftColor {
     /**
      * Represents white
      */
-    WHITE('f', Color(255, 255, 255)),
+    WHITE('f', Color(255, 255, 255));
 
-    /**
-     * Represents magical characters that change around randomly
-     */
-    MAGIC('k'),
-
-    /**
-     * Makes the text bold.
-     */
-    BOLD('l'),
-
-    /**
-     * Makes a line appear through the text.
-     */
-    STRIKETHROUGH('m'),
-
-    /**
-     * Makes the text appear underlined.
-     */
-    UNDERLINE('n'),
-
-    /**
-     * Makes the text italic.
-     */
-    ITALIC('o'),
-
-    /**
-     * Resets all previous chat colors or formats.
-     */
-    RESET('r');
-
-    val color: Color
-        get() {
-            return internalColor
-        }
-    private var internalColor: Color by Delegates.notNull<Color>()
     /**
      * Gets the char value associated with this design
 
      * @return A char value of this design code
      */
-    val char: Char
-    /**
-     * Checks if this code is a format code as opposed to a design code.
-
-     * @return whether this MinecraftColor is a format code
-     */
-    val isFormat: Boolean
-    private val toString: String
-
-    constructor(code: Char, color: Color) {
-        this.char = code
-        this.internalColor = color
-        this.isFormat = false
-        this.toString = String(charArrayOf(COLOR_CHAR, code))
-    }
-
-    constructor(code: Char) {
-        this.char = code
-        this.isFormat = true
-        this.toString = String(charArrayOf(COLOR_CHAR, code))
-    }
+    val char: Char = code
 
     /**
      * @return The color's alternative color, for example, [.LIGHT_PURPLE] alternative color is [.DARK_PURPLE]
@@ -176,20 +125,10 @@ enum class MinecraftColor {
             }
         }
 
-    override fun toString(): String {
-        return toString
-    }
-
-    /**
-     * Checks if this code is a design code as opposed to a format code.
-
-     * @return whether this MinecraftColor is a design code
-     */
-    val isColor: Boolean
-        get() = !isFormat && this != RESET
+    override fun toString() = "$COLOR_CHAR$char"
 
     companion object {
-
+        val ALPHA = Color(0, 0, 0, 0)
         /**
          * The special character which prefixes all chat colour codes. Use this if
          * you need to dynamically convert colour codes from your custom format.
@@ -215,7 +154,7 @@ enum class MinecraftColor {
          * @return Associative [MinecraftColor] with the given code,
          * * or null if it doesn't exist
          */
-        fun getByChar(code: Char): MinecraftColor {
+        fun getByString(code: Char): MinecraftColor {
             return BY_CHAR[code] ?: throw IllegalArgumentException("Unknown code '$code'!")
         }
 
@@ -227,7 +166,8 @@ enum class MinecraftColor {
          * @return Associative [MinecraftColor] with the given code,
          * * or null if it doesn't exist
          */
-        fun getByChar(ps: String): MinecraftColor = if (ps.length > 1) MinecraftColor.valueOf(ps) else MinecraftColor.getByChar(ps[0])
+        fun getByString(code: String): MinecraftColor = if (code.length > 1) MinecraftColor.valueOf(code) else MinecraftColor.getByString(
+                code[0])
 
         /**
          * Strips the given message of all design codes
@@ -236,26 +176,24 @@ enum class MinecraftColor {
          * *
          * @return A copy of the input string, without any coloring
          */
-        fun stripAll(input: String?): String? {
-            if (input == null) {
-                return null
+        fun stripAll(input: String) = stripColor(stripFormat(input))
+
+        fun stripColor(input: String) = STRIP_COLOR_PATTERN.matcher(input).replaceAll("")!!
+
+        @JvmOverloads
+        fun getColors(input: String, altColorChar: Char = '&'): List<MinecraftColor> {
+            val list = ArrayList<MinecraftColor>()
+            val b = input.toCharArray()
+            for (i in 0 .. b.size - 1 - 1) {
+                val next = b[i + 1]
+                if (b[i] == altColorChar && "0123456789AaBbCcDdEeFfKkLlMmNnOoRr".indexOf(next) > -1) {
+                    list += MinecraftColor.getByString(next)
+                }
             }
-            return stripColor(stripFormat(input))
+            return list
         }
 
-        fun stripColor(input: String?): String? {
-            if (input == null) {
-                return null
-            }
-            return STRIP_COLOR_PATTERN.matcher(input).replaceAll("")
-        }
-
-        fun stripFormat(input: String?): String? {
-            if (input == null) {
-                return null
-            }
-            return STRIP_FORMAT_PATTERN.matcher(input).replaceAll("")
-        }
+        fun stripFormat(input: String) = STRIP_FORMAT_PATTERN.matcher(input).replaceAll("")!!
 
         /**
          * Translates a string using an alternate design code character into a
@@ -269,7 +207,8 @@ enum class MinecraftColor {
          * *
          * @return Text containing the MinecraftColor.COLOR_CODE design code character.
          */
-        fun translateAlternateColorCodes(altColorChar: Char, textToTranslate: String): String {
+        @JvmOverloads
+        fun translateAlternateColorCodes(textToTranslate: String, altColorChar: Char = '&'): String {
             val b = textToTranslate.toCharArray()
             for (i in 0..b.size - 1 - 1) {
                 if (b[i] == altColorChar && "0123456789AaBbCcDdEeFfKkLlMmNnOoRr".indexOf(b[i + 1]) > -1) {
@@ -296,16 +235,8 @@ enum class MinecraftColor {
                 val section = input[index]
                 if (section == COLOR_CHAR && index < length - 1) {
                     val c = input[index + 1]
-                    val color = getByChar(c)
-
-                    if (color != null) {
-                        result = color.toString() + result
-
-                        // Once we find a design or reset we can stop searching
-                        if (color.isColor || color == RESET) {
-                            break
-                        }
-                    }
+                    val color = getByString(c)
+                    result = color.toString() + result
                 }
             }
             return result

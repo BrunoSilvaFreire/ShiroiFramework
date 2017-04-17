@@ -2,10 +2,15 @@ package me.ddevil.shiroi.craft.message
 
 import me.ddevil.shiroi.util.misc.Reloadable
 import org.bukkit.command.CommandSender
+import org.bukkit.inventory.ItemStack
 
 interface MessageManager : Reloadable {
 
     operator fun get(i: Int): Char
+
+    operator fun get(color: MessageColor): Char
+
+    fun isValidColor(i: Char): Boolean
 
     fun sendMessage(p: CommandSender, vararg messages: String)
 
@@ -23,4 +28,5 @@ interface MessageManager : Reloadable {
 
     fun translateAll(input: Iterable<String>): List<String>
 
+    fun translateItemStack(itemStack: ItemStack): ItemStack
 }

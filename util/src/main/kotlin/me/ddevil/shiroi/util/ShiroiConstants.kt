@@ -1,11 +1,17 @@
 package me.ddevil.shiroi.util
 
-object ShiroiConstants {
-    const val NAMEABLE_NAME_IDENTIFIER = "name"
-    const val NAMEABLE_ALIAS_IDENTIFIER = "alias"
-    const val X_IDENTIFIER = "x"
-    const val Y_IDENTIFIER = "y"
-    const val Z_IDENTIFIER = "z"
-    const val ALPHA_IDENTIFIER = "a"
-    const val PARENT_IDENTIFIER = "parent"
-}
+const val DEFAULT_SHIROI_X_IDENTIFIER = "x"
+const val DEFAULT_SHIROI_Y_IDENTIFIER = "y"
+const val DEFAULT_SHIROI_Z_IDENTIFIER = "z"
+const val DEFAULT_SHIROI_ALPHA_IDENTIFIER = "a"
+const val DEFAULT_SHIROI_PARENT_IDENTIFIER = "parent"
+const val DEFAULT_SHIROI_DESIGN_COLOR_CHAR = '$'
+const val DEFAULT_SHIROI_COLOR_CHAR = '&'
+const val DEFAULT_SHIROI_DEPENDENCIES_IDENTIFIER = "dependencies"
+const val DEFAULT_SHIROI_MATERIAL_TYPE_IDENTIFIER = "type"
+const val DEFAULT_SHIROI_ITEM_DATA_IDENTIFIER = "data"
+const val DEFAULT_SHIROI_ITEM_AMOUNT_IDENTIFIER = "amount"
+const val DEFAULT_SHIROI_ITEM_DURABILITY_IDENTIFIER = "durability"
+const val DEFAULT_SHIROI_ITEM_LORE_IDENTIFIER = "lore"
+const val DEFAULT_SHIROI_ITEM_TYPE_IDENTIFIER = "type"
+const val DEFAULT_SHIROI_DESCRIPTION_IDENTIFIER = "description"

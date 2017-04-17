@@ -4,9 +4,8 @@ enum class MessageColor {
     PRIMARY,
     SECONDARY,
     NEUTRAL,
-    WARNING;
+    WARNING,
+    SUCCESS;
 
-    override fun toString(): String {
-        return "$" + (ordinal + 1)
-    }
+    override fun toString() = "$${ordinal + 1}"
 }

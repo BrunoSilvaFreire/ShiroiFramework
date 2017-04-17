@@ -1,15 +1,18 @@
 allprojects {
     apply plugin: 'idea'
     group 'me.ddevil'
-    version '2.4.0-SNAPSHOT'
+    version '3.1.0-SNAPSHOT'
 }
 buildscript {
-    ext.kotlin_version = '1.0.5-2'
+    ext.kotlin_version = '1.1.0'
 
     repositories {
         mavenCentral()
         maven {
             url "https://plugins.gradle.org/m2/"
+        }
+        maven {
+            url "http://dl.bintray.com/kotlin/kotlin-eap-1.1"
         }
     }
     dependencies {
@@ -17,13 +20,14 @@ buildscript {
         classpath "com.github.jengelman.gradle.plugins:shadow:1.2.3"
     }
 }
+
 def notToPublish = Arrays.asList(["server", "commons"] as String[])
 
 setup(rootProject)
-def setup(project) {
-    if (project.childProjects.isEmpty()) {
-        println "Applying plugins to project $project.name parent $project.parent"
 
+def setup(project) {
+    println "shiroi-framework-$project.name"
+    if (project.childProjects.isEmpty()) {
         project.plugins.apply('maven-publish')
         project.plugins.apply('java')
         project.plugins.apply('kotlin')
@@ -41,36 +45,28 @@ def setup(project) {
             }
             repositories {
                 maven {
-                    credentials {
-                        username user
-                        password pass
-                    }
-                    url repo
+                    url 'file://' + rootDir + "/publication"
                 }
             }
-
         }
         project.repositories {
             mavenCentral()
             mavenLocal()
-            maven { url 'http://repo.dmulloy2.net/content/groups/public/' }
+            //Spigot things
             maven { url "https://hub.spigotmc.org/nexus/content/repositories/snapshots/" }
             maven { url 'http://repo.dmulloy2.net/content/groups/public/' }
-            maven { url "http://repo.mvdw-software.com/content/groups/public/" }
-            maven { url 'http://repo.extendedclip.com/content/repositories/placeholderapi/' };
-            maven { url 'http://149.56.97.155:8081/repository/maven-snapshots/' }
-            maven { url 'http://nexus.hc.to/content/repositories/pub_releases' }
+            //Shiroi
+            maven { url 'http://dev.dcgo.me:8081/repository/maven-snapshots/' }
+            //JNBT
             maven { url 'http://maven.angry.com.au/release' }
+            //Task Chain
             maven { url 'http://ci.emc.gs/nexus/content/groups/aikar/' }
         }
 
-        project.dependencies {
-            compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+        project.tasks.withType(Jar) {
+            destinationDir = file("$rootDir/output")
         }
     } else {
-        println 'Found sub projects in project: ' + project.name
-        println "Parent = $project.parent"
-        println project.childProjects
         project.childProjects.each { p ->
             setup(p.value)
         }

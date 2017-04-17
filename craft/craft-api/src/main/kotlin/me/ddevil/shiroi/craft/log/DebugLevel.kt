@@ -12,7 +12,5 @@ enum class DebugLevel constructor(val javaLevel: Level) {
     OKAY_SOME_REAL_SHIT_HAPPENED(Level.WARNING),
     FUCK_MAN_SOUND_THE_ALARMS(Level.SEVERE);
 
-    fun isHigherThan(level: DebugLevel): Boolean {
-        return ordinal >= level.ordinal
-    }
+    fun isHigherThan(level: DebugLevel) = ordinal >= level.ordinal
 }

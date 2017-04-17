@@ -1,4 +1,6 @@
 dependencies {
-    compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1';
+    compile "me.ddevil:kotlin-utils:1.0.0-SNAPSHOT"
+    compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
     compile group: 'com.google.guava', name: 'guava', version: '19.0'
 }

@@ -4,10 +4,18 @@ import co.aikar.taskchain.BukkitTaskChainFactory
 import co.aikar.taskchain.TaskChain
 import co.aikar.taskchain.TaskChainFactory
 import me.ddevil.shiroi.craft.plugin.ShiroiPlugin
+import me.ddevil.shiroi.util.misc.Toggleable
+import kotlin.properties.Delegates
 
-class ChainFactory(plugin: ShiroiPlugin<*, *>) {
-    val taskChainFactory: TaskChainFactory = BukkitTaskChainFactory.create(plugin)
+class ChainFactory(val plugin: ShiroiPlugin<*, *>) : Toggleable {
+    override fun enable() {
+        taskChainFactory = BukkitTaskChainFactory.create(plugin)
+    }
 
+    override fun disable() {
+    }
+
+    var taskChainFactory: TaskChainFactory by Delegates.notNull<TaskChainFactory>()
     fun <T> newChain(): TaskChain<T> {
         return taskChainFactory.newChain()
     }

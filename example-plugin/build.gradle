@@ -1,0 +1,22 @@
+apply plugin: 'com.github.johnrengelman.shadow'
+
+dependencies {
+    compile project(":craft:craft-internal")
+    compile project(":ui:ui-shiroi")
+}
+
+shadowJar {
+
+    dependencies {
+        include(dependency("org.jetbrains.kotlin:kotlin-runtime:1.0.6"))
+        include(dependency('org.jetbrains.kotlin:kotlin-stdlib:1.0.6'))
+        include(dependency('co.aikar:taskchain-bukkit:3.4.3'))
+        include(dependency('co.aikar:taskchain-core:3.4.3'))
+        include(project(":util"))
+        include(project(":craft:craft-api"))
+        include(project(":craft:craft-internal"))
+        include(project(":ui:ui-api"))
+        include(project(":ui:ui-internal"))
+        include(project(":ui:ui-shiroi"))
+    }
+}

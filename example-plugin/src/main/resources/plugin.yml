@@ -1,0 +1,3 @@
+name: GenericShiroiPlugin
+version: 0.0.1
+main: me.ddevil.shiroi.example.GenericPlugin

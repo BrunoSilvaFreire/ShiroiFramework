@@ -1,8 +1,8 @@
 package me.ddevil.shiroi.util.misc.design
 
 import com.google.common.collect.ImmutableMap
-import me.ddevil.shiroi.util.exception.IllegalColorException
-import me.ddevil.shiroi.util.serialization.Serializable
+import me.ddevil.util.getOrException
+import me.ddevil.util.serialization.Serializable
 
 open class ColorDesign : Serializable {
 
@@ -17,25 +17,44 @@ open class ColorDesign : Serializable {
     constructor(primaryColor: MinecraftColor, secondaryColor: MinecraftColor) {
         this.primaryColor = primaryColor
         this.secondaryColor = secondaryColor
-        if (!primaryColor.isColor) {
-            throw IllegalColorException(primaryColor)
-        }
-        if (!secondaryColor.isColor) {
-            throw IllegalColorException(secondaryColor)
-        }
     }
 
-    constructor(ps: String, ss: String) : this(
-            primaryColor = MinecraftColor.getByChar(ps),
-            secondaryColor = MinecraftColor.getByChar(ss)
+    constructor(primaryColor: String, secondaryColor: String) : this(
+            MinecraftColor.getByString(primaryColor),
+            MinecraftColor.getByString(secondaryColor)
     )
 
-    constructor(map: Map<String, Any>) : this(map[PRIMARY_COLOR_IDENTIFIER].toString(), map[SECONDARY_COLOR_IDENTIFIER].toString())
+    constructor(map: Map<String, Any>) : this(
+            map.getOrException<String>(PRIMARY_COLOR_IDENTIFIER),
+            map.getOrException<String>(SECONDARY_COLOR_IDENTIFIER)
+    )
 
     override fun serialize(): Map<String, Any> = ImmutableMap.Builder<String, Any>()
             .put(PRIMARY_COLOR_IDENTIFIER, primaryColor.name)
             .put(SECONDARY_COLOR_IDENTIFIER, secondaryColor.name)
             .build()
+
+    override fun toString() = "ColorDesign(primaryColor=$primaryColor, secondaryColor=$secondaryColor)"
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other?.javaClass != javaClass) return false
+
+        other as ColorDesign
+        when {
+            primaryColor != other.primaryColor -> return false
+            secondaryColor != other.secondaryColor -> return false
+            else -> return true
+        }
+
+    }
+
+    override fun hashCode(): Int {
+        var result = primaryColor.hashCode()
+        result = 31 * result + secondaryColor.hashCode()
+        return result
+    }
+
 
 }
 
