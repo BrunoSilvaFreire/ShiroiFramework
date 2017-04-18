@@ -1,8 +1,8 @@
-![ShiroiFramework](http://i.imgur.com/DKxUW1Q.png)
-Basically Shiroi is a framework that intents to make harder to implements features easier when 
+![ShiroiFramework](http://i.imgur.com/DKxUW1Q.png)  
+Basically Shiroi is a framework written in Kotlin that intents to make harder to implements features easier when 
 developing Bukkit Plugins.  
 It's divided in several modules so that if you only wants to use only one feature of the framework 
-you don't have to include everything.
+you don't have to include everything. The only current dependency is [KotlinUtils](https://github.com/DDevilISL/KotlinUtils).
 Currently, the modules are:
   
 * Utils (Minecraft Utilities independent from the Bukkit API for general use)
@@ -13,4 +13,3 @@ Currently, the modules are:
 * Minigames (Minigame Development Framework)  
 Not all of those are 100% implemented, but will soon come to be.  
 Feel free to do whatever you want with it. 
-
