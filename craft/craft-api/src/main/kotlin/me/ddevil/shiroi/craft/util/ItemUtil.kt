@@ -97,6 +97,8 @@ private fun registerGlow() {
 }
 
 private class Glow(id: Int) : Enchantment(id) {
+    override fun isCursed() = false
+
     override fun getName() = "glow"
 
     override fun isTreasure() = false

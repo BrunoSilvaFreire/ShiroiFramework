@@ -3,9 +3,9 @@ package me.ddevil.shiroi.craft.misc.master
 import com.google.common.collect.ImmutableMap
 import me.ddevil.shiroi.craft.misc.design.PluginColorDesign
 import me.ddevil.shiroi.craft.util.toMap
-import me.ddevil.shiroi.util.exception.IllegalValueTypeException
-import me.ddevil.shiroi.util.exception.ValueNotFoundException
 import me.ddevil.util.Serializable
+import me.ddevil.util.getBoolean
+import me.ddevil.util.getMapAny
 import org.bukkit.configuration.ConfigurationSection
 
 
@@ -32,12 +32,9 @@ class MasterConfig : Serializable {
     }
 
     constructor(map: Map<String, Any>) {
-        val mobj = map[USE_MASTER_COLOR_IDENTIFIER]
-        useMasterColor = (mobj ?: throw ValueNotFoundException(USE_MASTER_COLOR_IDENTIFIER))
-                as? Boolean ?: throw IllegalValueTypeException(Boolean::class.java, mobj.javaClass)
-        val cobj = map[MASTER_COLOR_IDENTIFIER]
-        val colorMap = (cobj ?: throw ValueNotFoundException(MASTER_COLOR_IDENTIFIER))
-                as? Map<String, Any> ?: throw IllegalValueTypeException(Boolean::class.java, mobj.javaClass)
+        val masterColorMap = map.getMapAny(USE_MASTER_COLOR_IDENTIFIER)
+        useMasterColor = masterColorMap.getBoolean(USE_MASTER_COLOR_IDENTIFIER)
+        val colorMap = map.getMapAny(MASTER_COLOR_IDENTIFIER)
         this.masterColor = PluginColorDesign(colorMap)
     }
 

@@ -1,7 +1,7 @@
 package me.ddevil.shiroi.craft.util
 
-import me.ddevil.shiroi.util.exception.IllegalValueTypeException
-import me.ddevil.shiroi.util.exception.ValueNotFoundException
+import me.ddevil.util.exception.IllegalValueTypeException
+import me.ddevil.util.exception.ValueNotFoundException
 import me.ddevil.util.serialization.Serializable
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.configuration.MemoryConfiguration
@@ -23,11 +23,35 @@ fun ConfigurationSection.set(map: Map<String, Any>) {
     }
 }
 
+fun ConfigurationSection.getShiroiString(key: String): String = getOrException(key)
+
+fun ConfigurationSection.getShiroiNumber(key: String): Number = getOrException(key)
+
+fun ConfigurationSection.getShiroiFloat(key: String) = getShiroiNumber(key).toFloat()
+
+fun ConfigurationSection.getShiroiDouble(key: String) = getShiroiNumber(key).toDouble()
+
+fun ConfigurationSection.getShiroiInt(key: String) = getShiroiNumber(key).toInt()
+
+fun ConfigurationSection.getShiroiLong(key: String) = getShiroiNumber(key).toLong()
+
+fun <V> ConfigurationSection.getMap(key: String): Map<String, V> = getOrException(key)
+
+fun ConfigurationSection.getShiroiMapAny(key: String): Map<String, Any> = getMap(key)
+
+fun ConfigurationSection.getShiroiBoolean(key: String): Boolean = getOrException(key)
+
+fun <T> ConfigurationSection.getShiroiList(key: String): List<T> = getOrException(key)
+
 inline fun <reified T : Any> ConfigurationSection.getOrException(key: String): T {
     val get = this[key] ?: throw ValueNotFoundException(key)
     return (get as? T) ?: throw IllegalValueTypeException(T::class.java, get.javaClass)
 }
 
+inline fun <reified T : Any> ConfigurationSection.getOrElse(key: String, default: T): T {
+    val get = this[key] ?: default
+    return (get as? T) ?: throw IllegalValueTypeException(T::class.java, get.javaClass)
+}
 fun ConfigurationSection.toMap(): Map<String, Any> {
     val map = HashMap<String, Any>()
     for ((key, value) in this.getValues(false)) {
