@@ -55,8 +55,6 @@ def setup(project) {
             //Spigot things
             maven { url "https://hub.spigotmc.org/nexus/content/repositories/snapshots/" }
             maven { url 'http://repo.dmulloy2.net/content/groups/public/' }
-            //Shiroi
-            maven { url 'http://dev.dcgo.me:8081/repository/maven-snapshots/' }
             //JNBT
             maven { url 'http://maven.angry.com.au/release' }
             //Task Chain
