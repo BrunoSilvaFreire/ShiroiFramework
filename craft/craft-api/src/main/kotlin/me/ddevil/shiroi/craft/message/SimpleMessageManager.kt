@@ -1,9 +1,8 @@
-package me.ddevil.shiroi.craft.internal.message
+package me.ddevil.shiroi.craft.message
 
 import me.ddevil.shiroi.craft.config.FileConfigKey
 import me.ddevil.shiroi.craft.config.FileConfigManager
 import me.ddevil.shiroi.craft.config.FileConfigValue
-import me.ddevil.shiroi.craft.message.MessageColor
 import me.ddevil.shiroi.craft.plugin.ShiroiPlugin
 import me.ddevil.shiroi.util.DEFAULT_SHIROI_COLOR_CHAR
 import me.ddevil.shiroi.util.DEFAULT_SHIROI_DESIGN_COLOR_CHAR

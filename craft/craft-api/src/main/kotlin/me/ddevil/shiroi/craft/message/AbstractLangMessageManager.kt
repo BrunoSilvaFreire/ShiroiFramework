@@ -1,6 +1,5 @@
-package me.ddevil.shiroi.craft.internal.message
+package me.ddevil.shiroi.craft.message
 
-import me.ddevil.shiroi.craft.message.LangMessageManager
 import me.ddevil.shiroi.craft.message.lang.Lang
 import me.ddevil.shiroi.craft.message.lang.MessageVariable
 import me.ddevil.shiroi.craft.plugin.ShiroiPlugin

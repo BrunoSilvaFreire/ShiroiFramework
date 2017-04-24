@@ -1,17 +1,15 @@
-package me.ddevil.shiroi.craft.internal.plugin
+package me.ddevil.shiroi.craft.plugin
 
 import me.ddevil.shiroi.craft.command.CommandManager
+import me.ddevil.shiroi.craft.command.SimpleCommandManager
 import me.ddevil.shiroi.craft.config.ConfigManager
-import me.ddevil.shiroi.craft.internal.command.SimpleCommandManager
-import me.ddevil.shiroi.craft.internal.log.InternalPluginLogger
 import me.ddevil.shiroi.craft.log.DebugLevel
+import me.ddevil.shiroi.craft.log.InternalPluginLogger
 import me.ddevil.shiroi.craft.log.PluginLogger
 import me.ddevil.shiroi.craft.message.MessageManager
 import me.ddevil.shiroi.craft.misc.design.PluginColorDesign
 import me.ddevil.shiroi.craft.misc.master.MasterConfig
 import me.ddevil.shiroi.craft.misc.task.ChainFactory
-import me.ddevil.shiroi.craft.plugin.PluginSettings
-import me.ddevil.shiroi.craft.plugin.ShiroiPlugin
 import me.ddevil.shiroi.craft.util.set
 import org.bukkit.Bukkit
 import org.bukkit.configuration.file.YamlConfiguration

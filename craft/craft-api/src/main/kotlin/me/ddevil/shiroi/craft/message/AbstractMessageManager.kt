@@ -1,6 +1,5 @@
-package me.ddevil.shiroi.craft.internal.message
+package me.ddevil.shiroi.craft.message
 
-import me.ddevil.shiroi.craft.message.MessageManager
 import me.ddevil.shiroi.craft.misc.design.PluginColorDesign
 import me.ddevil.shiroi.craft.plugin.ShiroiPlugin
 import org.bukkit.Bukkit

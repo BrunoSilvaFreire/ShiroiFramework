@@ -1,7 +1,7 @@
 apply plugin: 'com.github.johnrengelman.shadow'
 
 dependencies {
-    compile project(":craft:craft-internal")
+    compile project(":craft:craft-api")
     compile project(":ui:ui-shiroi")
 }
 
@@ -14,9 +14,7 @@ shadowJar {
         include(dependency('co.aikar:taskchain-core:3.4.3'))
         include(project(":util"))
         include(project(":craft:craft-api"))
-        include(project(":craft:craft-internal"))
         include(project(":ui:ui-api"))
-        include(project(":ui:ui-internal"))
         include(project(":ui:ui-shiroi"))
     }
 }

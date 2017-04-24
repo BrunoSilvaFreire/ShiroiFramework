@@ -1,5 +1,0 @@
-apply plugin: 'com.github.johnrengelman.shadow'
-
-dependencies {
-    compile project(':craft:craft-api')
-}
