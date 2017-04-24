@@ -1,6 +1,6 @@
 include ':craft', ':craft:craft-api', ':craft:craft-internal',
         ':ui', ':ui:ui-api', ':ui:ui-internal', ":ui:ui-shiroi",
-        ':minigames', ':minigames:minigames-api', ':minigames:minigames-craft',
+        ':minigames', ':minigames:minigames-api', ':minigames:minigames-skywars', ':minigames:minigames-feature-pack-1',
         ':util',
         ":effect",
         ":schematic", ":schematic:schematic-bukkit", ":schematic:schematic-core",

@@ -1,0 +1,4 @@
+dependencies {
+    compile project(":minigames:minigames-api")
+    compile project(":minigames:minigames-feature-pack-1")
+}
