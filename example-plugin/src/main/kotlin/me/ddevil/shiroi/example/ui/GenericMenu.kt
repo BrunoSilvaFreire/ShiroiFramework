@@ -1,6 +1,6 @@
 package me.ddevil.shiroi.example.ui
 
-import me.ddevil.shiroi.craft.util.ItemBuilder
+import me.ddevil.shiroi.craft.util.ShiroiItemBuilder
 import me.ddevil.shiroi.example.GenericPlugin
 import me.ddevil.shiroi.ui.api.component.SlotComponent
 import me.ddevil.shiroi.ui.api.component.container.MenuSize
@@ -57,9 +57,9 @@ class GenericMenu(plugin: GenericPlugin) : ShiroiMenu<GenericPlugin>(
 
                 firstScrollable.add(ItemSlotComponent(object : ItemUpdater {
                     override fun update(oldItem: ItemStack): ItemStack {
-                        return ItemBuilder(oldItem, plugin.messageManager)
+                        return ShiroiItemBuilder(plugin.messageManager, oldItem)
                                 .setName("$1${value.name}$3-$2$current")
-                                .toItemStack()
+                                .build()
                     }
                 }, ItemStack(value), null))
 
@@ -67,9 +67,9 @@ class GenericMenu(plugin: GenericPlugin) : ShiroiMenu<GenericPlugin>(
             }
         }
         background = GenericUIConstants.PRIMARY_BACKGROUND
-        place(CloseButton(ItemBuilder(Material.BARRIER, plugin.messageManager)
+        place(CloseButton(ShiroiItemBuilder(plugin.messageManager, Material.BARRIER)
                 .setName("$4Close")
-                .toItemStack()), 8, 5)
+                .build()), 8, 5)
     }
 
     override fun update0() {

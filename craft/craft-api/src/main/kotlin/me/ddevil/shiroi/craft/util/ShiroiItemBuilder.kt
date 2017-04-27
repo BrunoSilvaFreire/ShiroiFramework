@@ -11,44 +11,50 @@ import org.bukkit.inventory.meta.LeatherArmorMeta
 import org.bukkit.inventory.meta.SkullMeta
 import org.bukkit.material.Wool
 
-class ItemBuilder {
-    private val messageManager: MessageManager?
+class ShiroiItemBuilder : ItemBuilder {
+    override var item: ItemStack
 
-    private var item: ItemStack
+    var messageManager: MessageManager
 
-    @JvmOverloads
-    constructor(m: Material, messageManager: MessageManager? = null) : this(m, 1, messageManager)
-
-    @JvmOverloads
-    constructor(item: ItemStack, messageManager: MessageManager? = null) {
-        this.messageManager = messageManager
+    constructor(messageManager: MessageManager, item: ItemStack) {
         this.item = item
+        this.messageManager = messageManager
     }
 
     @JvmOverloads
-    constructor(m: Material, amount: Int, messageManager: MessageManager? = null) {
-        this.messageManager = messageManager
-        item = ItemStack(m, amount)
-    }
+    constructor(
+            messageManager: MessageManager,
+            m: Material,
+            amount: Int = 1
+    ) : this(messageManager, ItemStack(m, amount))
 
-    fun clone(): ItemBuilder {
-        return ItemBuilder(item, messageManager)
-    }
 
-    fun setDurability(dur: Short): ItemBuilder {
+    override fun clone(): ItemBuilder = NormalItemBuilder(item)
+
+    override fun setDurability(dur: Short): ItemBuilder {
         item.durability = dur
         return this
     }
 
-    fun setName(name: String): ItemBuilder {
-        var name = name
+    override fun setName(name: String?): ItemBuilder {
         val im = item.itemMeta
-        if (messageManager != null) {
-            name = messageManager.translateAll(name)
-        }
-        im.displayName = name
+        im.displayName = getString(name)
         item.itemMeta = im
         return this
+    }
+
+    private fun getString(string: String?): String? {
+        if (string == null) {
+            return null
+        }
+        return messageManager.translateAll(string)
+    }
+
+    private fun getStringList(list: List<String>?): List<String>? {
+        if (list == null) {
+            return null
+        }
+        return messageManager.translateAll(list)
     }
 
     /**
@@ -60,7 +66,7 @@ class ItemBuilder {
      * *
      * @since 1.1
      */
-    fun color(color: Color): ItemBuilder {
+    override fun color(color: Color): ItemBuilder {
         val type = item.type
         if (type == Material.LEATHER_BOOTS || type == Material.LEATHER_CHESTPLATE || type == Material.LEATHER_HELMET
                 || type == Material.LEATHER_LEGGINGS) {
@@ -79,17 +85,17 @@ class ItemBuilder {
     }
 
 
-    fun addUnsafeEnchantment(ench: Enchantment, level: Int): ItemBuilder {
+    override fun addUnsafeEnchantment(ench: Enchantment, level: Int): ItemBuilder {
         item.addUnsafeEnchantment(ench, level)
         return this
     }
 
-    fun removeEnchantment(ench: Enchantment): ItemBuilder {
+    override fun removeEnchantment(ench: Enchantment): ItemBuilder {
         item.removeEnchantment(ench)
         return this
     }
 
-    fun setSkullOwner(owner: String): ItemBuilder {
+    override fun setSkullOwner(owner: String): ItemBuilder {
         try {
             val im = item.itemMeta as SkullMeta
             im.owner = owner
@@ -100,28 +106,25 @@ class ItemBuilder {
         return this
     }
 
-    fun addEnchant(ench: Enchantment, level: Int): ItemBuilder {
+    override fun addEnchant(ench: Enchantment, level: Int): ItemBuilder {
         val im = item.itemMeta
         im.addEnchant(ench, level, true)
         item.itemMeta = im
         return this
     }
 
-    fun setInfinityDurability(): ItemBuilder {
+    override fun setInfinityDurability(): ItemBuilder {
         item.durability = java.lang.Short.MAX_VALUE
         return this
     }
 
-    fun setLore(lore: List<String>): ItemBuilder {
-        var lore = lore
+    override fun setLore(lore: List<String>?): ItemBuilder {
         val im = item.itemMeta
-        if (messageManager != null) {
-            lore = messageManager.translateAll(lore)
-        }
-        im.lore = lore
+        im.lore = getStringList(lore)
         item.itemMeta = im
         return this
     }
+
 
     /**
      * Clears the lore of the [ItemStack]
@@ -130,7 +133,7 @@ class ItemBuilder {
      * *
      * @since 1.0
      */
-    fun clearLore(): ItemBuilder {
+    override fun clearLore(): ItemBuilder {
         val meta = item.itemMeta
         meta.lore = emptyList<String>()
         item.itemMeta = meta
@@ -144,33 +147,33 @@ class ItemBuilder {
      * *
      * @since 1.0
      */
-    fun clearEnchantments(): ItemBuilder {
+    override fun clearEnchantments(): ItemBuilder {
         for (e in item.enchantments.keys) {
             item.removeEnchantment(e)
         }
         return this
     }
 
-    fun toItemStack(): ItemStack {
+    override fun build(): ItemStack {
         return item
     }
 
     companion object {
 
         @Throws(IllegalArgumentException::class)
-        fun createItem(itemSection: ConfigurationSection?, messageManager: MessageManager): ItemBuilder {
+        fun createItem(itemSection: ConfigurationSection): ItemBuilder {
             try {
                 var itemName: String? = null
-                if (itemSection!!.contains("name")) {
-                    itemName = messageManager.translateAll(itemSection.getString("name"))
+                if (itemSection.contains("name")) {
+                    itemName = itemSection.getString("name")
                 }
                 var itemLore: List<String>? = null
                 if (itemSection.contains("lore")) {
-                    itemLore = messageManager.translateAll(itemSection.getStringList("lore"))
+                    itemLore = itemSection.getStringList("lore")
                 }
                 val m = Material.valueOf(itemSection.getString("type"))
                 val data = itemSection.getInt("data").toByte()
-                val itemBuilder = ItemBuilder(ItemStack(m, 1, 0.toShort(), data), messageManager)
+                val itemBuilder = NormalItemBuilder(ItemStack(m, 1, 0.toShort(), data))
                 if (itemLore != null) {
                     itemBuilder.setLore(itemLore)
                 }
@@ -179,16 +182,12 @@ class ItemBuilder {
                 }
                 return itemBuilder
             } catch (e: Exception) {
-                if (itemSection == null) {
-                    throw IllegalArgumentException("Given configuration section is null! ", e)
-                } else {
-                    throw IllegalStateException("Configuration Section " + itemSection.currentPath + " is baddly formated!",
-                            e)
-                }
+
+                throw IllegalStateException("Configuration Section " + itemSection.currentPath + " is baddly formated!",
+                        e)
             }
 
         }
     }
+
 }
-
-

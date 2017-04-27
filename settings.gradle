@@ -1,4 +1,4 @@
-include ':craft', ':craft:craft-api', ':craft:craft-internal',
+include ':craft', ':craft:craft-util', ':craft:craft-api',
         ':ui', ':ui:ui-api', ":ui:ui-shiroi",
         ':minigames', ':minigames:minigames-api', ':minigames:minigames-skywars', ':minigames:minigames-feature-pack-1',
         ':util',

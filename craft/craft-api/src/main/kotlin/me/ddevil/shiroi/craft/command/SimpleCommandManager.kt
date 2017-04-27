@@ -1,7 +1,5 @@
-package me.ddevil.shiroi.craft.internal.command
+package me.ddevil.shiroi.craft.command
 
-import me.ddevil.shiroi.craft.command.*
-import me.ddevil.shiroi.craft.command.Command
 import me.ddevil.shiroi.craft.command.internal.DebugCommand
 import me.ddevil.shiroi.craft.command.internal.ReloadCommand
 import me.ddevil.shiroi.craft.plugin.ShiroiPlugin

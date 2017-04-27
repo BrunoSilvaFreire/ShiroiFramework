@@ -1,7 +1,5 @@
-package me.ddevil.shiroi.craft.internal.config
+package me.ddevil.shiroi.craft.config
 
-import me.ddevil.shiroi.craft.config.FileConfigKey
-import me.ddevil.shiroi.craft.config.FileConfigValue
 import me.ddevil.shiroi.craft.misc.design.PluginColorDesign
 import me.ddevil.shiroi.craft.plugin.ShiroiPlugin
 import me.ddevil.shiroi.craft.util.toMap

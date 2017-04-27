@@ -1,3 +1,4 @@
 dependencies {
     compile project(":ui:ui-api")
+    compile project(":craft:craft-api")
 }

@@ -1,8 +1,8 @@
 package me.ddevil.shiroi.util.misc.design
 
 import com.google.common.collect.ImmutableMap
+import me.ddevil.util.Serializable
 import me.ddevil.util.getOrException
-import me.ddevil.util.serialization.Serializable
 
 open class ColorDesign : Serializable {
 

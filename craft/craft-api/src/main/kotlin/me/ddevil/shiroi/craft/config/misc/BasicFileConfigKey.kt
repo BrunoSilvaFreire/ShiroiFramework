@@ -1,4 +1,4 @@
-package me.ddevil.shiroi.craft.internal.config.misc
+package me.ddevil.shiroi.craft.config.misc
 
 import me.ddevil.shiroi.craft.config.FileConfigKey
 

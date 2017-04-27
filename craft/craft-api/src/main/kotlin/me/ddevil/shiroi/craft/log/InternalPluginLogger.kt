@@ -1,7 +1,5 @@
-package me.ddevil.shiroi.craft.internal.log
+package me.ddevil.shiroi.craft.log
 
-import me.ddevil.shiroi.craft.log.DebugLevel
-import me.ddevil.shiroi.craft.log.PluginLogger
 import me.ddevil.shiroi.craft.plugin.ShiroiPlugin
 import java.util.logging.Logger
 

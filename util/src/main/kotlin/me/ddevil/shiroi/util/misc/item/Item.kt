@@ -7,8 +7,8 @@ import me.ddevil.shiroi.util.exception.item.IncompatibleEnchantmentException
 import me.ddevil.shiroi.util.exception.item.SimilarEnchantmentException
 import me.ddevil.shiroi.util.exception.material.UnknownMaterialException
 import me.ddevil.shiroi.util.misc.item.enchantment.Enchantment
+import me.ddevil.util.Serializable
 import me.ddevil.util.getOrException
-import me.ddevil.util.serialization.Serializable
 
 open class Item : Serializable {
     var material: Material

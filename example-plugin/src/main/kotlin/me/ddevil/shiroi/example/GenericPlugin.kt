@@ -1,10 +1,10 @@
 package me.ddevil.shiroi.example
 
 import me.ddevil.shiroi.craft.config.FileConfigManager
-import me.ddevil.shiroi.craft.internal.config.SimpleFileConfigManager
-import me.ddevil.shiroi.craft.internal.message.SimpleMessageManager
-import me.ddevil.shiroi.craft.internal.message.TagTranslator
-import me.ddevil.shiroi.craft.internal.plugin.AbstractPlugin
+import me.ddevil.shiroi.craft.config.SimpleFileConfigManager
+import me.ddevil.shiroi.craft.message.SimpleMessageManager
+import me.ddevil.shiroi.craft.message.TagTranslator
+import me.ddevil.shiroi.craft.plugin.AbstractPlugin
 import me.ddevil.shiroi.craft.plugin.PluginSettings
 import me.ddevil.shiroi.example.config.GenericConfigKey
 import me.ddevil.shiroi.example.config.GenericConfigValue

@@ -1,8 +1,8 @@
 package me.ddevil.shiroi.craft.util
 
+import me.ddevil.util.Serializable
 import me.ddevil.util.exception.IllegalValueTypeException
 import me.ddevil.util.exception.ValueNotFoundException
-import me.ddevil.util.serialization.Serializable
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.configuration.MemoryConfiguration
 import java.util.*

@@ -1,4 +1,4 @@
-package me.ddevil.shiroi.craft.internal.message
+package me.ddevil.shiroi.craft.message
 
 import me.ddevil.shiroi.craft.config.FileConfigKey
 import me.ddevil.shiroi.craft.config.FileConfigManager

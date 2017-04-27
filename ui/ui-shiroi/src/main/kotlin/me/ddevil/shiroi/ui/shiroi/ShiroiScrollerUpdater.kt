@@ -3,7 +3,7 @@ package me.ddevil.shiroi.ui.shiroi
 import me.ddevil.shiroi.craft.message.MessageColor
 import me.ddevil.shiroi.craft.message.MessageManager
 import me.ddevil.shiroi.craft.plugin.ShiroiPlugin
-import me.ddevil.shiroi.craft.util.ItemBuilder
+import me.ddevil.shiroi.craft.util.ShiroiItemBuilder
 import me.ddevil.shiroi.ui.api.DEFAULT_NEXT_TEXT
 import me.ddevil.shiroi.ui.api.DEFAULT_PREVIOUS_TEXT
 import me.ddevil.shiroi.ui.api.component.scrollable.Scrollable
@@ -36,9 +36,9 @@ class ShiroiScrollerUpdater : ScrollerUpdater<Scrollable<*>> {
     }
 
     override fun update(scrollable: Scrollable<*>, direction: ScrollDirection): ItemStack {
-        return ItemBuilder(ItemStack(icon), messageManager)
+        return ShiroiItemBuilder(messageManager, ItemStack(icon))
                 .setName(MessageColor.PRIMARY.toString() + if (direction === ScrollDirection.NEXT) next else previous)
                 .setLore(listOf(MessageColor.PRIMARY.toString() + (scrollable.currentIndex + 1) + MessageColor.NEUTRAL + "/" + MessageColor.SECONDARY + scrollable.totalPages))
-                .toItemStack()
+                .build()
     }
 }
