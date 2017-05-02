@@ -4,12 +4,15 @@ package me.ddevil.shiroi.craft.util
 import me.ddevil.shiroi.util.misc.item.Item
 import me.ddevil.shiroi.util.misc.item.ItemStack
 import me.ddevil.shiroi.util.misc.item.Material
+import me.ddevil.util.degreesToRad
+import me.ddevil.util.radToDegrees
 import me.ddevil.util.vector.DoubleVector3
 import me.ddevil.util.vector.Vector2
 import me.ddevil.util.vector.Vector3
 import org.bukkit.Location
 import org.bukkit.World
 import org.bukkit.event.block.Action
+import org.bukkit.util.EulerAngle
 import org.bukkit.util.Vector
 
 
@@ -49,3 +52,10 @@ fun Vector3<*>.toVector() = Vector(x.toDouble(), y.toDouble(), z.toDouble())
 fun Location.toVector3(): Vector3<Double> = DoubleVector3(x, y, z)
 
 fun Vector.toVector3(): Vector3<Double> = DoubleVector3(x, y, z)
+
+fun EulerAngle.toVector3(): Vector3<Double> = DoubleVector3(x.radToDegrees(), y.radToDegrees(), z.radToDegrees())
+
+fun Vector3<*>.toEulerAngle() = EulerAngle(
+        x.toDouble().degreesToRad(),
+        y.toDouble().degreesToRad(),
+        z.toDouble().degreesToRad())
