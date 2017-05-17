@@ -4,7 +4,6 @@ import me.ddevil.shiroi.craft.log.DebugLevel
 import me.ddevil.shiroi.craft.plugin.ShiroiPlugin
 import java.io.File
 import java.io.FileOutputStream
-import java.lang.Long
 import java.nio.channels.Channels
 import java.util.*
 import java.util.jar.JarFile

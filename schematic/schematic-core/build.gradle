@@ -1,4 +1,5 @@
 dependencies {
     compile group: 'jnbt', name: 'jnbt', version: '1.1'
     compile project(":util")
+    testCompile 'junit:junit:4.12'
 }

@@ -1,16 +1,15 @@
-package me.ddevil.shiroi.ui.internal.component.container
+package me.ddevil.shiroi.ui.api.component.container
 
 import com.google.common.collect.ImmutableMap
 import me.ddevil.shiroi.ui.api.UIPosition
 import me.ddevil.shiroi.ui.api.component.Component
 import me.ddevil.shiroi.ui.api.component.Drawable
 import me.ddevil.shiroi.ui.api.component.area.AreaComponent
-import me.ddevil.shiroi.ui.api.component.container.Container
+import me.ddevil.shiroi.ui.api.component.holder.AbstractHolder
 import me.ddevil.shiroi.ui.api.exception.OutOfBoundsException
 import me.ddevil.shiroi.ui.api.exception.PositionAlreadyOccupiedException
 import me.ddevil.shiroi.ui.api.misc.Action
-import me.ddevil.shiroi.ui.internal.component.holder.AbstractHolder
-import me.ddevil.shiroi.ui.internal.misc.handler.ContainerHandler
+import me.ddevil.shiroi.ui.api.misc.handler.ContainerHandler
 import org.bukkit.inventory.ItemStack
 import java.util.*
 
@@ -69,7 +68,7 @@ constructor(
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Placement methods">
     override fun add(component: D) {
-        for (i in 0 .. size - 1) {
+        for (i in 0..size - 1) {
             val pos = UIPosition.fromSlot(i, width)
             if (canPlaceIn(pos)) {
                 place(component, pos)
@@ -125,8 +124,8 @@ constructor(
     }
 
     private fun addAreaObject(drawable: AreaComponent, x: Int, y: Int) {
-        for (ix in 0 .. drawable.width - 1) {
-            for (iy in 0 .. drawable.height - 1) {
+        for (ix in 0..drawable.width - 1) {
+            for (iy in 0..drawable.height - 1) {
                 if (hasObjectIn(ix + x, iy + y)) {
                     val found = get(ix + x, iy + y)
                     if (found != drawable) {
@@ -151,7 +150,7 @@ constructor(
      *
      * @return True if the component is currently visible (will be displayed when drawn) in this holder.
      */
-    override fun isVisible(component: D) = contains(component)
+    override fun isVisible(component: D) = component in this
 
     override fun getCurrentPositionOf(child: D): UIPosition = getPosition(child) ?: throw IllegalStateException("Holder does not contain child $child!")
 
@@ -164,8 +163,8 @@ constructor(
         val objMap = getMenuMap()
         val builder = ImmutableMap.Builder<UIPosition, ItemStack>()
         val addedObjects = HashSet<Component>()
-        for (y in fromY .. toY) {
-            for (x in fromX .. toX) {
+        for (y in fromY..toY) {
+            for (x in fromX..toX) {
                 val currentPos = UIPosition(x, y)
                 val uiObject = objMap[currentPos]
                 if (uiObject != null) {

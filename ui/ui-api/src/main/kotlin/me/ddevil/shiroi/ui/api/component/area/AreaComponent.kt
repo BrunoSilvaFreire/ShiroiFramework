@@ -33,6 +33,11 @@ interface AreaComponent : Drawable {
      */
     operator fun contains(position: UIPosition): Boolean
 
+    /**
+     * Checks if the given coordinates ([x], [y]) is within the relative area of this object.
+     *
+     * @return true if the given position is within bounds, false otherwise.
+     */
     fun contains(x: Int, y: Int): Boolean
 
     /**

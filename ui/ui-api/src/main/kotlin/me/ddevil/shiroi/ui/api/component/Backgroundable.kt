@@ -3,7 +3,7 @@ package me.ddevil.shiroi.ui.api.component
 import org.bukkit.inventory.ItemStack
 
 /**
- * Represents an object that can contain a background.
+ * Represents an object that can contain an [ItemStack] as a background.
  */
 interface Backgroundable : Component {
 

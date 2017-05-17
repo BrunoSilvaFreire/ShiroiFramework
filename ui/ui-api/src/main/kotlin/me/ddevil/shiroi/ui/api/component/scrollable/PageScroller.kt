@@ -1,14 +1,13 @@
-package me.ddevil.shiroi.ui.internal.component.scrollable
+package me.ddevil.shiroi.ui.api.component.scrollable
 
 import me.ddevil.shiroi.ui.api.UIPosition
 import me.ddevil.shiroi.ui.api.component.Clickable
 import me.ddevil.shiroi.ui.api.component.container.Menu
-import me.ddevil.shiroi.ui.api.component.scrollable.Scrollable
+import me.ddevil.shiroi.ui.api.component.misc.AbstractSlotComponent
 import me.ddevil.shiroi.ui.api.event.UIClickEvent
 import me.ddevil.shiroi.ui.api.misc.Action
 import me.ddevil.shiroi.ui.api.misc.ScrollDirection
 import me.ddevil.shiroi.ui.api.updater.ScrollerUpdater
-import me.ddevil.shiroi.ui.internal.component.misc.AbstractSlotComponent
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 

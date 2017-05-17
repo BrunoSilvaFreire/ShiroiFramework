@@ -1,9 +1,8 @@
-package me.ddevil.shiroi.ui.internal.component.area
+package me.ddevil.shiroi.ui.api.component.area
 
 import com.google.common.collect.ImmutableSortedSet
 import me.ddevil.shiroi.ui.api.UIPosition
-import me.ddevil.shiroi.ui.api.component.area.AreaComponent
-import me.ddevil.shiroi.ui.internal.component.misc.AbstractComponent
+import me.ddevil.shiroi.ui.api.component.misc.AbstractComponent
 import java.util.*
 
 abstract class AbstractAreaComponent

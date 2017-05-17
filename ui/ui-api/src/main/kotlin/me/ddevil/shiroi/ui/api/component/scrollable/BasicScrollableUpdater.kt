@@ -1,8 +1,7 @@
-package me.ddevil.shiroi.ui.internal.component.scrollable
+package me.ddevil.shiroi.ui.api.component.scrollable
 
 import me.ddevil.shiroi.ui.api.DEFAULT_NEXT_TEXT
 import me.ddevil.shiroi.ui.api.DEFAULT_PREVIOUS_TEXT
-import me.ddevil.shiroi.ui.api.component.scrollable.Scrollable
 import me.ddevil.shiroi.ui.api.misc.ScrollDirection
 import me.ddevil.shiroi.ui.api.updater.ScrollerUpdater
 import org.bukkit.ChatColor

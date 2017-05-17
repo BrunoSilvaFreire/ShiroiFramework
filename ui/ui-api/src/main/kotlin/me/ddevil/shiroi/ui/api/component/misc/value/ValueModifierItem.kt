@@ -1,10 +1,10 @@
-package me.ddevil.shiroi.ui.internal.component.misc.value
+package me.ddevil.shiroi.ui.api.component.misc.value
 
 import me.ddevil.shiroi.ui.api.UIPosition
+import me.ddevil.shiroi.ui.api.component.misc.ClickableItemSlotComponent
 import me.ddevil.shiroi.ui.api.event.UIClickEvent
 import me.ddevil.shiroi.ui.api.misc.Action
 import me.ddevil.shiroi.ui.api.updater.ItemUpdater
-import me.ddevil.shiroi.ui.internal.component.misc.ClickableItemSlotComponent
 import org.bukkit.inventory.ItemStack
 
 class ValueModifierItem<T> : ClickableItemSlotComponent {

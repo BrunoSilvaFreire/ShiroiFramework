@@ -4,7 +4,7 @@ import me.ddevil.shiroi.craft.event.ShiroiPluginReloadEvent
 import me.ddevil.shiroi.craft.message.MessageManager
 import me.ddevil.shiroi.craft.plugin.ShiroiPlugin
 import me.ddevil.shiroi.ui.api.component.container.MenuSize
-import me.ddevil.shiroi.ui.internal.component.menu.IndependentMenu
+import me.ddevil.shiroi.ui.api.component.menu.IndependentMenu
 import org.bukkit.Bukkit
 import org.bukkit.event.EventHandler
 import org.bukkit.inventory.ItemStack

@@ -1,19 +1,16 @@
 package me.ddevil.shiroi.craft.misc.master
 
-import com.google.common.collect.ImmutableMap
 import me.ddevil.shiroi.craft.misc.design.PluginColorDesign
 import me.ddevil.shiroi.craft.util.toMap
-import me.ddevil.util.Serializable
-import me.ddevil.util.getBoolean
-import me.ddevil.util.getMapAny
+import me.ddevil.util.*
 import org.bukkit.configuration.ConfigurationSection
 
 
 class MasterConfig : Serializable {
-    override fun serialize(): Map<String, Any> = ImmutableMap.builder<String, Any>()
-            .put(USE_MASTER_COLOR_IDENTIFIER, useMasterColor)
-            .put(MASTER_COLOR_IDENTIFIER, masterColor.serialize())
-            .build()
+    override fun serialize(): Map<String, Any> = immutableMap {
+        this[USE_MASTER_COLOR_IDENTIFIER] = useMasterColor
+        this[MASTER_COLOR_IDENTIFIER] = masterColor.serialize()
+    }
 
     companion object {
         const val USE_MASTER_COLOR_IDENTIFIER = "useMasterColor"

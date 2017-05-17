@@ -1,4 +1,4 @@
-package me.ddevil.shiroi.ui.internal.component.menu
+package me.ddevil.shiroi.ui.api.component.menu
 
 import me.ddevil.shiroi.ui.api.component.container.MenuSize
 import me.ddevil.shiroi.ui.api.event.InteractionType

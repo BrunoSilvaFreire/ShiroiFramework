@@ -1,7 +1,7 @@
 package me.ddevil.shiroi.craft.message
 
-import me.ddevil.shiroi.craft.config.FileConfigKey
 import me.ddevil.shiroi.craft.config.FileConfigManager
+import me.ddevil.shiroi.craft.config.FileConfigSource
 import me.ddevil.shiroi.craft.config.FileConfigValue
 import me.ddevil.shiroi.craft.plugin.ShiroiPlugin
 import me.ddevil.shiroi.util.DEFAULT_SHIROI_COLOR_CHAR
@@ -12,8 +12,8 @@ import org.bukkit.ChatColor
 import org.bukkit.command.CommandSender
 
 
-open class SimpleMessageManager<P : ShiroiPlugin<*, *>>
-constructor(plugin: P,
+open class SimpleMessageManager
+constructor(plugin: ShiroiPlugin<*, *>,
             val messageSeparator: String,
             val pluginPrefix: String,
             translators: List<TagTranslator> = emptyList()) : AbstractMessageManager<ShiroiPlugin<*, *>>(plugin) {
@@ -29,7 +29,7 @@ constructor(plugin: P,
         if (!i.isDigit()) {
             return false
         }
-        return Character.getNumericValue(i) in 1 .. 5
+        return Character.getNumericValue(i) in 1..5
     }
 
     val translators: List<TagTranslator>
@@ -72,7 +72,7 @@ constructor(plugin: P,
 
     override fun translateColors(input: String): String {
         val b = input.toCharArray()
-        for (i in 0 .. b.size - 1) {
+        for (i in 0..b.size - 1) {
             if (b[i] == DEFAULT_SHIROI_DESIGN_COLOR_CHAR && isValidColor(b[i + 1])) {
                 b[i] = ChatColor.COLOR_CHAR
                 b[i + 1] = get(Character.getNumericValue(b[i + 1]))
@@ -97,24 +97,23 @@ constructor(plugin: P,
 
     companion object {
         @JvmOverloads
-        fun <P : ShiroiPlugin<*, *>> create(plugin: P,
-                                            messageSeparator: String,
-                                            pluginPrefix: String,
-                                            translators: List<TagTranslator> = emptyList()): SimpleMessageManager<P> {
-            return SimpleMessageManager(plugin, messageSeparator, pluginPrefix, translators)
-        }
+        fun create(plugin: ShiroiPlugin<*, *>,
+                   messageSeparator: String,
+                   pluginPrefix: String,
+                   translators: List<TagTranslator> = emptyList()
+        ) = SimpleMessageManager(plugin, messageSeparator, pluginPrefix, translators)
 
         @JvmOverloads
-        fun <P : ShiroiPlugin<*, *>, K : FileConfigKey> create(plugin: P,
-                                                               configManager: FileConfigManager<K>,
-                                                               pluginPrefix: FileConfigValue<String, K>,
-                                                               messageSeparator: FileConfigValue<String, K>,
-                                                               translators: List<TagTranslator> = emptyList()): SimpleMessageManager<P> {
-            return create(plugin,
-                    configManager.getValue(pluginPrefix),
-                    configManager.getValue(messageSeparator),
-                    translators)
-        }
+        fun <K : FileConfigSource> create(
+                plugin: ShiroiPlugin<*, *>,
+                configManager: FileConfigManager<K, *>,
+                pluginPrefix: FileConfigValue<String, K>,
+                messageSeparator: FileConfigValue<String, K>,
+                translators: List<TagTranslator> = emptyList()
+        ) = create(plugin,
+                configManager.getValue(pluginPrefix),
+                configManager.getValue(messageSeparator),
+                translators)
 
     }
 }

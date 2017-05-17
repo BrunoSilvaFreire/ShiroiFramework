@@ -1,10 +1,8 @@
-package me.ddevil.shiroi.ui.internal.component.holder
+package me.ddevil.shiroi.ui.api.component.holder
 
 import me.ddevil.shiroi.ui.api.UIPosition
 import me.ddevil.shiroi.ui.api.component.Drawable
-import me.ddevil.shiroi.ui.api.component.holder.Holder
-import me.ddevil.shiroi.ui.api.component.holder.HolderClickListener
-import me.ddevil.shiroi.ui.internal.component.area.AbstractAreaComponent
+import me.ddevil.shiroi.ui.api.component.area.AbstractAreaComponent
 import org.bukkit.inventory.ItemStack
 import java.util.*
 
@@ -40,7 +38,7 @@ constructor(
     }
 
     override fun drawChild(child: D): Map<UIPosition, ItemStack> {
-        if (!contains(child)) {
+        if (child !in this) {
             throw IllegalArgumentException("This holder doesn't contains component $child in it's hierarchy!")
         }
         if (!isVisible(child)) {

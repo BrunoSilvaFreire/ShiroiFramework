@@ -1,4 +1,4 @@
-package me.ddevil.shiroi.ui.internal.misc.handler
+package me.ddevil.shiroi.ui.api.misc.handler
 
 import me.ddevil.shiroi.ui.api.UIPosition
 import me.ddevil.shiroi.ui.api.component.Drawable

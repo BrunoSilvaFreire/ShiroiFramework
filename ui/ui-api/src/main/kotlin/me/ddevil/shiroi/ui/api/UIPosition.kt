@@ -1,5 +1,6 @@
 package me.ddevil.shiroi.ui.api
 
+import me.ddevil.shiroi.ui.api.component.container.Container
 import me.ddevil.util.vector.IntVector2
 
 /**
@@ -8,9 +9,19 @@ import me.ddevil.util.vector.IntVector2
  */
 class UIPosition(x: Int, y: Int) : IntVector2(x, y) {
 
-
+    /**
+     * Converts this position to a int representing the slot it would be located in
+     * a container with the specified [width].
+     * By default, it uses the normal minecraft inventory as the width ([MAX_INVENTORY_SIZE_X]), which is 9
+     */
     @JvmOverloads
     fun toInvSlot(width: Int = MAX_INVENTORY_SIZE_X) = y * width + x
+
+    /**
+     * Converts this position to a int representing the slot it would be located in
+     * the specified [container]
+     */
+    fun toInvSlot(container: Container<*>) = toInvSlot(container.width)
 
     operator fun compareTo(other: UIPosition): Int = other.toInvSlot().compareTo(toInvSlot())
 
@@ -22,7 +33,8 @@ class UIPosition(x: Int, y: Int) : IntVector2(x, y) {
 
     companion object {
         @JvmOverloads
-        fun fromSlot(slot: Int, parentWidth: Int = MAX_INVENTORY_SIZE_X) = UIPosition(slot % parentWidth,
+        fun fromSlot(slot: Int, parentWidth: Int = MAX_INVENTORY_SIZE_X) = UIPosition(
+                slot % parentWidth,
                 slot / parentWidth)
 
         val ZERO = UIPosition(0, 0)

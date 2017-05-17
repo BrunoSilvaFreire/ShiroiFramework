@@ -1,4 +1,4 @@
-package me.ddevil.shiroi.ui.internal.component.menu
+package me.ddevil.shiroi.ui.api.component.menu
 
 import me.ddevil.shiroi.ui.api.MAX_INVENTORY_SIZE_X
 import me.ddevil.shiroi.ui.api.UIPosition

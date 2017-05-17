@@ -23,31 +23,28 @@ import java.util.logging.Level
 import kotlin.properties.Delegates
 
 
-abstract class AbstractPlugin<out M : MessageManager, out C : ConfigManager<*>> : JavaPlugin(), ShiroiPlugin<M, C> {
+abstract class AbstractPlugin<M : MessageManager, C : ConfigManager<*>> : JavaPlugin(), ShiroiPlugin<M, C> {
 
     final override val settings: PluginSettings
-    final override val chainFactory: ChainFactory = ChainFactory(this)
+    final override val chainFactory = ChainFactory(this)
     final override val masterConfig: MasterConfig
     final override val pluginLogger: PluginLogger
-    /*
-        * Implement properties and delegate to internal functions
-        */
+
     final override var colorDesign: PluginColorDesign by Delegates.notNull<PluginColorDesign>()
-    final override val messageManager: M
-        get() = internalMessageManager
-    final override val commandManager: CommandManager
-        get() = internalCommandManager
-    final override val configManager: C
-        get() = internalConfigManager
+
+    final lateinit override var messageManager: M
+        private set
+
+    final lateinit override var configManager: C
+        private set
+
+    final lateinit override var commandManager: CommandManager
+        private set
+
+
     override val allKnownAliases: Array<String>
         get() = arrayOf(*settings.aliases, settings.primaryAcronym)
-    /*
-            * Use some kotlin magic and delegate these properties, as they are initialized
-            * on #onEnable to keep things safe
-            */
-    private var internalMessageManager: M by Delegates.notNull<M>()
-    private var internalCommandManager: CommandManager by Delegates.notNull<CommandManager>()
-    private var internalConfigManager: C by Delegates.notNull<C>()
+
 
     init {
         if (javaClass.isAnnotationPresent(PluginSettings::class.java)) {
@@ -89,8 +86,8 @@ abstract class AbstractPlugin<out M : MessageManager, out C : ConfigManager<*>> 
          * source for resources used by the plugin.
          * Then, we use it to load the plugin's color design
          */
-        this.internalConfigManager = loadConfigManager()
-        internalConfigManager.enable()
+        this.configManager = loadConfigManager()
+        configManager.enable()
         pluginLogger.log("Loaded Config Manager...")
 
         /*
@@ -100,9 +97,6 @@ abstract class AbstractPlugin<out M : MessageManager, out C : ConfigManager<*>> 
          * 3 - If #2 fails, load default
          */
 
-        /*
-         * TODO: Implement main color design loading
-         */
         colorDesign = tryLoadColorDesign()
         pluginLogger.log("Loaded Color Design... ($colorDesign)")
 
@@ -110,17 +104,18 @@ abstract class AbstractPlugin<out M : MessageManager, out C : ConfigManager<*>> 
          * Now we load the message manager and command manager, as the
          * color design is loaded and it's safe to translate it.
          */
-        this.internalMessageManager = loadMessageManager()
-        internalMessageManager.enable()
+        this.messageManager = loadMessageManager()
+        messageManager.enable()
         pluginLogger.log("Loaded Message Manager...")
-        this.internalCommandManager = SimpleCommandManager(this)
-        internalCommandManager.enable()
+        this.commandManager = SimpleCommandManager(this)
+        commandManager.enable()
         pluginLogger.log("Loaded Command Manager...")
         onEnable0()
         val end = System.currentTimeMillis()
         val total = end - start
         pluginLogger.log("Plugin loaded in $total ms! (${(total / 1000).toDouble()}s)")
     }
+
 
     private fun tryLoadColorDesign(): PluginColorDesign {
         if (masterConfig.useMasterColor && !settings.ignoreMasterConfig) {
@@ -148,16 +143,16 @@ abstract class AbstractPlugin<out M : MessageManager, out C : ConfigManager<*>> 
     }
 
     override fun saveResource(resourcePath: String, destination: File) {
-        var resourcePath = resourcePath
-        if (resourcePath == "") {
+        var path = resourcePath
+        if (path == "") {
             throw IllegalArgumentException("ResourcePath cannot be null or empty")
         }
 
-        resourcePath = resourcePath.replace('\\', '/')
-        val `in` = getResource(resourcePath) ?: throw IllegalArgumentException("The embedded resource '$resourcePath' cannot be found in $file")
+        path = path.replace('\\', '/')
+        val `in` = getResource(path) ?: throw IllegalArgumentException("The embedded resource '$path' cannot be found in $file")
 
-        val lastIndex = resourcePath.lastIndexOf('/')
-        val outDir = File(dataFolder, resourcePath.substring(0, if (lastIndex >= 0) lastIndex else 0))
+        val lastIndex = path.lastIndexOf('/')
+        val outDir = File(dataFolder, path.substring(0, if (lastIndex >= 0) lastIndex else 0))
 
         if (!outDir.exists()) {
             outDir.mkdirs()
@@ -184,6 +179,7 @@ abstract class AbstractPlugin<out M : MessageManager, out C : ConfigManager<*>> 
     }
 
     override fun registerListener(listener: Listener) = Bukkit.getPluginManager().registerEvents(listener, this)
+
     override fun unregisterListener(listener: Listener) = HandlerList.unregisterAll(listener)
 
     override fun reload() {

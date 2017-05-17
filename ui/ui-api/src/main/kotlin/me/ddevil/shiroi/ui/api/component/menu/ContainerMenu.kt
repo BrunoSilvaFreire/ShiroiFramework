@@ -1,12 +1,12 @@
-package me.ddevil.shiroi.ui.internal.component.menu
+package me.ddevil.shiroi.ui.api.component.menu
 
 import me.ddevil.shiroi.ui.api.MAX_INVENTORY_SIZE_X
 import me.ddevil.shiroi.ui.api.UIPosition
 import me.ddevil.shiroi.ui.api.component.Drawable
+import me.ddevil.shiroi.ui.api.component.container.ArrayContainer
 import me.ddevil.shiroi.ui.api.component.container.Menu
 import me.ddevil.shiroi.ui.api.component.container.MenuSize
 import me.ddevil.shiroi.ui.api.component.holder.HolderClickListener
-import me.ddevil.shiroi.ui.internal.component.container.ArrayContainer
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack

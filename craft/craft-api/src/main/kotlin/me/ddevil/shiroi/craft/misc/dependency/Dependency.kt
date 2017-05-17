@@ -1,6 +1,6 @@
 package me.ddevil.shiroi.craft.misc.dependency
 
-import me.ddevil.util.misc.internal.AbstractNameable
+import me.ddevil.util.misc.AbstractNameable
 import java.net.URL
 
 abstract class Dependency constructor(

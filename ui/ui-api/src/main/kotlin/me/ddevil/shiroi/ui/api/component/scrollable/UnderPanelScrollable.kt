@@ -1,4 +1,4 @@
-package me.ddevil.shiroi.ui.internal.component.scrollable
+package me.ddevil.shiroi.ui.api.component.scrollable
 
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.ImmutableSortedSet
@@ -7,7 +7,6 @@ import me.ddevil.shiroi.ui.api.component.Clickable
 import me.ddevil.shiroi.ui.api.component.Component
 import me.ddevil.shiroi.ui.api.component.SlotComponent
 import me.ddevil.shiroi.ui.api.component.container.Menu
-import me.ddevil.shiroi.ui.api.component.scrollable.Scrollable
 import me.ddevil.shiroi.ui.api.event.UIActionEvent
 import me.ddevil.shiroi.ui.api.event.UIClickEvent
 import me.ddevil.shiroi.ui.api.misc.Action

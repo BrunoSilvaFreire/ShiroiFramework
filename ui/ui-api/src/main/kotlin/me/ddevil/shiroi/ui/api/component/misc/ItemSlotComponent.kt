@@ -1,4 +1,4 @@
-package me.ddevil.shiroi.ui.internal.component.misc
+package me.ddevil.shiroi.ui.api.component.misc
 
 import me.ddevil.shiroi.ui.api.updater.ItemUpdater
 import org.bukkit.inventory.ItemStack

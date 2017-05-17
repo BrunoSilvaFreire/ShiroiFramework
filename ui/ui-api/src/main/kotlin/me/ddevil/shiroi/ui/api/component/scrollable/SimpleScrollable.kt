@@ -1,11 +1,10 @@
-package me.ddevil.shiroi.ui.internal.component.scrollable
+package me.ddevil.shiroi.ui.api.component.scrollable
 
 import com.google.common.collect.ImmutableMap
 import me.ddevil.shiroi.ui.api.UIPosition
 import me.ddevil.shiroi.ui.api.component.Clickable
 import me.ddevil.shiroi.ui.api.component.Component
 import me.ddevil.shiroi.ui.api.component.Drawable
-import me.ddevil.shiroi.ui.api.component.scrollable.Scrollable
 import me.ddevil.shiroi.ui.api.event.UIActionEvent
 import me.ddevil.shiroi.ui.api.event.UIClickEvent
 import me.ddevil.shiroi.ui.api.misc.Action
@@ -27,6 +26,16 @@ open class SimpleScrollable<H : Drawable>(
         id), Scrollable<H> {
 
     override var currentIndex = 0
+        set(value) {
+            var page = value
+            if (page >= totalPages) {
+                page = totalPages - 1
+            } else if (page < 0) {
+                page = 0
+            }
+            field = page
+            recalculateCurrentPage()
+        }
     private val positionMap: SortedMap<Int, H>
     final override val currentPage: SortedMap<Int, H>
     final override var action: Action = ScrollableClickHandler()
@@ -73,7 +82,7 @@ open class SimpleScrollable<H : Drawable>(
 
 
     override fun add(component: H) {
-        for (i in 0 .. Integer.MAX_VALUE - 1) {
+        for (i in 0..Integer.MAX_VALUE - 1) {
             if (canPlaceIn(i)) {
                 place(component, i)
                 break
@@ -108,10 +117,10 @@ open class SimpleScrollable<H : Drawable>(
         return background != null
     }
 
-    override fun place(drawable: H, position: Int) {
+    override fun place(component: H, position: Int) {
         if (canPlaceIn(position)) {
             synchronized(positionMap) {
-                positionMap.put(position, drawable)
+                positionMap.put(position, component)
             }
             recalculateCurrentPage()
         } else {
@@ -136,7 +145,7 @@ open class SimpleScrollable<H : Drawable>(
         val pageSize = pageSize
         val start = currentIndex * pageSize
         val end = start + pageSize - 1
-        for ((pos, i) in (start .. end).withIndex()) {
+        for ((pos, i) in (start..end).withIndex()) {
             val get = positionMap[i]
             if (get != null) {
                 currentPage.put(pos, get)
@@ -183,14 +192,7 @@ open class SimpleScrollable<H : Drawable>(
     }
 
     override fun goToPage(page: Int) {
-        var page = page
-        if (page >= totalPages) {
-            page = totalPages - 1
-        } else if (page < 0) {
-            page = 0
-        }
         this.currentIndex = page
-        recalculateCurrentPage()
     }
 
     override fun get(drawable: H): Int {
@@ -205,8 +207,8 @@ open class SimpleScrollable<H : Drawable>(
     override fun draw(fromX: Int, toX: Int, fromY: Int, toY: Int): Map<UIPosition, ItemStack> {
         val builder = ImmutableMap.Builder<UIPosition, ItemStack>()
         val addedObjects = HashSet<Component>()
-        for (y in fromY .. toY) {
-            for (x in fromX .. toX) {
+        for (y in fromY..toY) {
+            for (x in fromX..toX) {
                 val currentPos = UIPosition(x, y)
                 val uiObject = currentPage[currentPos.toInvSlot(width)]
                 if (uiObject != null) {

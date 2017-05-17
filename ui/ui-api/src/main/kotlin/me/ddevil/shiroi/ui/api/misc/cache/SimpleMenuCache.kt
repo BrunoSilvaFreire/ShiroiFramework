@@ -1,9 +1,8 @@
-package me.ddevil.shiroi.ui.internal.misc.cache
+package me.ddevil.shiroi.ui.api.misc.cache
 
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import me.ddevil.shiroi.ui.api.component.container.Menu
-import me.ddevil.shiroi.ui.api.misc.cache.MenuLoader
 import java.util.*
 
 class SimpleMenuCache

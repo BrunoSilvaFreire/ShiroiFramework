@@ -6,14 +6,14 @@ import me.ddevil.shiroi.craft.plugin.ShiroiPlugin
 import org.bukkit.command.CommandSender
 import org.bukkit.inventory.ItemStack
 
-abstract class AbstractLangMessageManager<P : ShiroiPlugin<*, *>, in L : Lang<*, *>>
+abstract class AbstractLangMessageManager<in L : Lang<*, *>>
 @JvmOverloads
 constructor(
-        plugin: P,
+        plugin: ShiroiPlugin<*, *>,
         messageSeparator: String,
         pluginPrefix: String,
         translators: List<TagTranslator> = emptyList()
-) : SimpleMessageManager<P>(plugin, messageSeparator, pluginPrefix, translators), LangMessageManager<L> {
+) : SimpleMessageManager(plugin, messageSeparator, pluginPrefix, translators), LangMessageManager<L> {
 
     override fun sendMessage(sender: CommandSender, message: L, vararg variables: MessageVariable) {
         sendMessage(sender, message.translate(getLang(message), *variables))

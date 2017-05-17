@@ -1,7 +1,7 @@
-package me.ddevil.shiroi.ui.internal.component.misc.value
+package me.ddevil.shiroi.ui.api.component.misc.value
 
+import me.ddevil.shiroi.ui.api.component.container.ArrayContainer
 import me.ddevil.shiroi.ui.api.updater.ItemUpdater
-import me.ddevil.shiroi.ui.internal.component.container.ArrayContainer
 import org.bukkit.inventory.ItemStack
 
 

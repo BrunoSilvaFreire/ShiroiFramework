@@ -4,6 +4,6 @@ include ':craft', ':craft:craft-util', ':craft:craft-api',
         ':util',
         ":effect",
         ":schematic", ":schematic:schematic-bukkit", ":schematic:schematic-core",
-        ":example-plugin"
+        ":example-plugin", ":gradle-plugin"
 rootProject.name = 'shiroi-framework'
 

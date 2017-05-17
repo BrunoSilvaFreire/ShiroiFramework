@@ -3,7 +3,10 @@ package me.ddevil.shiroi.craft.config
 import me.ddevil.shiroi.craft.misc.design.PluginColorDesign
 import me.ddevil.shiroi.util.misc.Reloadable
 
-interface ConfigManager<out K : ConfigKey> : Reloadable {
+/**
+ * Represents
+ */
+interface ConfigManager<out K : ConfigSource> : Reloadable {
 
     /*val availableLoaders: Set<ConfigLoader<*, *>>
 

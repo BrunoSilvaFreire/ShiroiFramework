@@ -1,35 +1,76 @@
 package me.ddevil.shiroi.craft.config
 
+import me.ddevil.shiroi.craft.misc.design.PluginColorDesign
 import me.ddevil.shiroi.craft.plugin.ShiroiPlugin
+import me.ddevil.shiroi.craft.util.toMap
+import org.bukkit.configuration.ConfigurationSection
+import org.bukkit.configuration.file.FileConfiguration
 import java.io.File
-import java.util.logging.Level
 
-abstract class AbstractFileConfigManager<out P : ShiroiPlugin<*, *>, K : FileConfigKey>
-constructor(val plugin: P) : FileConfigManager<K> {
+/**
+ * An abstract implementation of a [FileConfigManager] independent of file format, implementations of this class
+ * must solely handle getting formats from it's
+ */
+abstract class AbstractFileConfigManager<K : FileConfigSource, S : FileConfiguration>
+constructor(
+        val plugin: ShiroiPlugin<*, *>,
+        val colorDesignKey: FileConfigValue<*, K>
+) : FileConfigManager<K, S> {
 
-    private val cache: MutableMap<FileConfigValue<*, K>, Any> = mutableMapOf()
+    private val loadedConfigFiles: MutableMap<K, S> = mutableMapOf()
+    private val loadedValues: MutableMap<FileConfigValue<*, K>, Any> = mutableMapOf()
 
-    override fun <T> getValue(value: FileConfigValue<T, K>): T {
-        /**
-         * todo: Find a better way to deal with the type cast shitstorm
-         */
-        if (cache.contains(value)) {
-            return cache[value]!! as? T ?: throw IllegalStateException("Wrong type found for config value '${value.path}' @ ${value.key.name}")
-        }
-        var loaded = getValue0(value)
-        if (loaded == null) {
-            plugin.logger.log(Level.WARNING, "Couldn't find value for '${value.path}', loading default one...")
-            loaded = value.defaultValue
-            val config = getConfig(value.key)
-            config.set(value.path, loaded)
-            config.save(getFile(value.key))
-        }
-        cache.put(value, loaded as Any)
+    override val availableConfigs: Set<K>
+        get() = HashSet(loadedConfigFiles.keys)
 
-        return loaded
+
+    abstract fun <T : Any> loadValue(value: FileConfigValue<T, K>, source: S): Any?
+
+    abstract fun loadConfig(file: File): S
+
+    override fun enable() {}
+
+    override fun disable() {}
+
+    override fun getSource(key: K): S {
+        return loadedConfigFiles.getOrPut(key) { loadConfig(getFile(key)) }
     }
 
-    fun getFile(key: K): File {
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : Any> getValue(value: FileConfigValue<T, K>): T {
+        if (value in loadedValues) {
+            //Value was already loaded
+            return loadedValues[value] as T
+        }
+
+        val source = getSource(value.source)
+        val loadedValue = loadValue(value, source)
+
+        //Type-safe variable
+        val finalValue: T
+
+        if (loadedValue == null) {
+            //Config doesn't have a value, load default
+            plugin.pluginLogger.log("Couldn't find value for '${value.path}', loading default one...")
+            finalValue = value.defaultValue
+            val config = getSource(value.source)
+            config.set(value.path, finalValue)
+            config.save(getFile(value.source))
+        } else {
+            //Found value, try to get it as the right type
+            try {
+                finalValue = (loadedValue as T)
+            } catch(e: Exception) {
+                //Value has wrong type
+                val msg = "Unexpected value type for config value '${value.path}' @ '${value.source.name}'"
+                throw IllegalStateException(msg, e)
+            }
+        }
+        loadedValues.put(value, finalValue)
+        return finalValue
+    }
+
+    override fun getFile(key: K): File {
         val file = File(plugin.dataFolder, key.folderPath)
         if (!file.exists()) {
             plugin.saveResource(key.resourcePath, file)
@@ -37,9 +78,21 @@ constructor(val plugin: P) : FileConfigManager<K> {
         return file
     }
 
-
-    abstract fun <T> getValue0(value: FileConfigValue<T, K>): T?
     override fun reload() {
-        cache.clear()
+        loadedConfigFiles.clear()
+        loadedValues.clear()
+    }
+
+    override fun loadColorDesign(): PluginColorDesign? {
+        val foundValue = getValue(colorDesignKey)
+        val map: Map<String, Any>
+        if (foundValue is ConfigurationSection) {
+            map = foundValue.toMap()
+        } else if (foundValue is Map<*, *>) {
+            map = foundValue as Map<String, Any>
+        } else {
+            throw IllegalArgumentException("Expected Map or ConfigSection to load PluginColorDesign! Got $foundValue")
+        }
+        return PluginColorDesign(map)
     }
 }

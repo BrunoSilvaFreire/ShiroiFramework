@@ -2,12 +2,12 @@ package me.ddevil.shiroi.example.ui
 
 import me.ddevil.shiroi.craft.util.ShiroiItemBuilder
 import me.ddevil.shiroi.example.GenericPlugin
+import me.ddevil.shiroi.ui.api.component.CloseButton
 import me.ddevil.shiroi.ui.api.component.SlotComponent
 import me.ddevil.shiroi.ui.api.component.container.MenuSize
+import me.ddevil.shiroi.ui.api.component.misc.ItemSlotComponent
+import me.ddevil.shiroi.ui.api.component.scrollable.UnderPanelScrollable
 import me.ddevil.shiroi.ui.api.updater.ItemUpdater
-import me.ddevil.shiroi.ui.internal.component.CloseButton
-import me.ddevil.shiroi.ui.internal.component.misc.ItemSlotComponent
-import me.ddevil.shiroi.ui.internal.component.scrollable.UnderPanelScrollable
 import me.ddevil.shiroi.ui.shiroi.ShiroiMenu
 import me.ddevil.shiroi.ui.shiroi.ShiroiScrollerUpdater
 import org.bukkit.Material

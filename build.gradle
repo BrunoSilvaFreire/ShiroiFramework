@@ -1,13 +1,14 @@
 allprojects {
     apply plugin: 'idea'
     group 'me.ddevil'
-    version '3.1.1-SNAPSHOT'
+    version '3.2.1-SNAPSHOT'
 }
 buildscript {
-    ext.kotlin_version = '1.1.1'
+    ext.kotlin_version = '1.1.2-3'
 
     repositories {
         mavenCentral()
+        jcenter()
         maven {
             url "https://plugins.gradle.org/m2/"
         }
@@ -17,7 +18,7 @@ buildscript {
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "com.github.jengelman.gradle.plugins:shadow:1.2.3"
+        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.4'
     }
 }
 
@@ -31,7 +32,6 @@ def setup(project) {
         project.plugins.apply('maven-publish')
         project.plugins.apply('java')
         project.plugins.apply('kotlin')
-        project.plugins.apply('idea')
         project.sourceCompatibility = 1.8
         project.targetCompatibility = 1.8
         project.compileJava.options.encoding = 'UTF-8'

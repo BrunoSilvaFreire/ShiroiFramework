@@ -1,4 +1,4 @@
-package me.ddevil.shiroi.ui.internal.component.misc
+package me.ddevil.shiroi.ui.api.component.misc
 
 import com.google.common.collect.ImmutableMap
 import me.ddevil.shiroi.ui.api.UIPosition

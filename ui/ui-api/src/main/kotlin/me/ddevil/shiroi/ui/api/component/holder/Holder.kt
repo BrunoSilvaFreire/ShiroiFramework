@@ -9,7 +9,7 @@ import me.ddevil.shiroi.ui.api.component.area.AreaComponent
 import org.bukkit.inventory.ItemStack
 
 /**
- * A holder represents a component that is able to contains and organize other components within itself.
+ * A holder represents a component that is able to contain and organize other components within itself.
  *
  * These components are called "childs".
  *
@@ -59,7 +59,7 @@ interface Holder<D : Drawable> : AreaComponent, Backgroundable, Clickable {
      *
      * @return True if the component in within this holder's hierarchy tree, false otherwise.
      */
-    fun contains(component: D): Boolean
+    operator fun contains(component: D): Boolean
 
     /**
      * Differently of [contains], this will check if this holder is the direct owner
