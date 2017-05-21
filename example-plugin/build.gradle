@@ -8,12 +8,15 @@ dependencies {
 shadowJar {
 
     dependencies {
-        include(dependency("org.jetbrains.kotlin:kotlin-runtime:1.0.6"))
-        include(dependency('org.jetbrains.kotlin:kotlin-stdlib:1.0.6'))
-        include(dependency('co.aikar:taskchain-bukkit:3.4.3'))
-        include(dependency('co.aikar:taskchain-core:3.4.3'))
+        include(dependency("org.jetbrains.kotlin:kotlin-runtime:$kotlin_version"))
+        include(dependency("org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"))
+        include(dependency("me.ddevil:kotlin-utils:1.0.0-SNAPSHOT"))
+        include(dependency("me.ddevil:json:1.0.0-SNAPSHOT"))
+        include(dependency("co.aikar:taskchain-bukkit:3.4.3"))
+        include(dependency("co.aikar:taskchain-core:3.4.3"))
         include(project(":util"))
         include(project(":craft:craft-api"))
+        include(project(":craft:craft-util"))
         include(project(":ui:ui-api"))
         include(project(":ui:ui-shiroi"))
     }

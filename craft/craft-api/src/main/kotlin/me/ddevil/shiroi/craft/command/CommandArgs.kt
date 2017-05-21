@@ -1,7 +1,7 @@
 package me.ddevil.shiroi.craft.command
 
-import me.ddevil.shiroi.craft.message.LangMessageManager
 import me.ddevil.shiroi.craft.message.lang.Lang
+import me.ddevil.shiroi.craft.message.lang.LangMessageManager
 import me.ddevil.shiroi.craft.message.lang.MessageVariable
 import me.ddevil.shiroi.craft.plugin.ShiroiPlugin
 import org.bukkit.Bukkit
@@ -178,11 +178,11 @@ class CommandArgs(
         }, action)
     }
 
-    inline fun <L : Lang<*, *>> getStringOrMessage(index: Int,
-                                                   lang: L,
-                                                   messageManager: LangMessageManager<L>,
-                                                   vararg variables: MessageVariable,
-                                                   action: (String) -> Unit) {
+    inline fun <L : Lang<*>> getStringOrMessage(index: Int,
+                                                lang: L,
+                                                messageManager: LangMessageManager<L>,
+                                                vararg variables: MessageVariable,
+                                                action: (String) -> Unit) {
         getStringOrElse(index, {
             messageManager.sendMessage(sender, lang, *variables)
         }, action)
@@ -196,7 +196,7 @@ class CommandArgs(
         }, action)
     }
 
-    inline fun <L : Lang<*, *>> getIntOrMessage(
+    inline fun <L : Lang<*>> getIntOrMessage(
             index: Int,
             orElse: L,
             orElseVariables: () -> Array<MessageVariable>,
@@ -220,7 +220,7 @@ class CommandArgs(
         }, action)
     }
 
-    inline fun <L : Lang<*, *>> getDoubleOrMessage(
+    inline fun <L : Lang<*>> getDoubleOrMessage(
             index: Int,
             orElse: L,
             orElseVariables: () -> Array<MessageVariable>,
@@ -243,7 +243,7 @@ class CommandArgs(
         }, action)
     }
 
-    inline fun <L : Lang<*, *>> getLongOrMessage(
+    inline fun <L : Lang<*>> getLongOrMessage(
             index: Int,
             orElse: L,
             orElseVariables: () -> Array<MessageVariable>,
@@ -266,7 +266,7 @@ class CommandArgs(
         }, action)
     }
 
-    inline fun <L : Lang<*, *>> getFloatOrMessage(
+    inline fun <L : Lang<*>> getFloatOrMessage(
             index: Int,
             orElse: L,
             orElseVariables: () -> Array<MessageVariable>,

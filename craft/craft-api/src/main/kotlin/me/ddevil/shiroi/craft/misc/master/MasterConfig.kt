@@ -29,8 +29,7 @@ class MasterConfig : Serializable {
     }
 
     constructor(map: Map<String, Any>) {
-        val masterColorMap = map.getMapAny(USE_MASTER_COLOR_IDENTIFIER)
-        useMasterColor = masterColorMap.getBoolean(USE_MASTER_COLOR_IDENTIFIER)
+        useMasterColor = map.getBoolean(USE_MASTER_COLOR_IDENTIFIER)
         val colorMap = map.getMapAny(MASTER_COLOR_IDENTIFIER)
         this.masterColor = PluginColorDesign(colorMap)
     }

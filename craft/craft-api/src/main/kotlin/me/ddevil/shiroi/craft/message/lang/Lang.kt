@@ -1,9 +1,8 @@
 package me.ddevil.shiroi.craft.message.lang
 
-import me.ddevil.shiroi.craft.config.ConfigSource
 import me.ddevil.shiroi.craft.config.ConfigValue
 
-class Lang<out K : ConfigValue<String, V>, out V : ConfigSource>(val key: K) {
+open class Lang<out K : ConfigValue<String, *>>(val key: K) {
 
     fun translate(original: String, vararg variables: MessageVariable): String {
         var modified = original

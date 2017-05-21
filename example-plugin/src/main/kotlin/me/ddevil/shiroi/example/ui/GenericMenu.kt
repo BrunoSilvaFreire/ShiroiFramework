@@ -15,11 +15,11 @@ import org.bukkit.inventory.ItemStack
 
 class GenericMenu(plugin: GenericPlugin) : ShiroiMenu<GenericPlugin>(
         plugin,
-        "$1Hello $2Shiroi!",
+        "$1Hello $2world!",
         MenuSize.SIX_ROWS,
         GenericUIConstants.PRIMARY_BACKGROUND
 ) {
-    private val firstScrollable: UnderPanelScrollable<SlotComponent<*>> = UnderPanelScrollable(
+    private val firstScrollable = UnderPanelScrollable(
             SlotComponent::class.java,
             this,
             4,
@@ -28,12 +28,12 @@ class GenericMenu(plugin: GenericPlugin) : ShiroiMenu<GenericPlugin>(
             GenericUIConstants.SECONDARY_BACKGROUND,
             GenericUIConstants.PRIMARY_BACKGROUND)
 
-    private val secondScrollable: UnderPanelScrollable<SlotComponent<*>> = UnderPanelScrollable(
+    private val secondScrollable = UnderPanelScrollable(
             SlotComponent::class.java,
             this,
             4,
             3,
-            ShiroiScrollerUpdater(Material.EMERALD, plugin),
+            ShiroiScrollerUpdater(Material.DIAMOND, plugin),
             GenericUIConstants.SECONDARY_BACKGROUND,
             GenericUIConstants.PRIMARY_BACKGROUND)
 
@@ -42,7 +42,7 @@ class GenericMenu(plugin: GenericPlugin) : ShiroiMenu<GenericPlugin>(
             this,
             4,
             3,
-            ShiroiScrollerUpdater(Material.EMERALD, plugin),
+            ShiroiScrollerUpdater(Material.REDSTONE, plugin),
             GenericUIConstants.SECONDARY_BACKGROUND,
             GenericUIConstants.PRIMARY_BACKGROUND)
 
@@ -51,19 +51,18 @@ class GenericMenu(plugin: GenericPlugin) : ShiroiMenu<GenericPlugin>(
         place(firstScrollable, 0, 0)
         place(secondScrollable, 5, 0)
         place(thirdScrollable, 0, 3)
-        var current = 0
-        for (value in Material.values()) {
+        for ((index, value) in Material.values().withIndex()) {
             if (value.isOccluding) {
-
-                firstScrollable.add(ItemSlotComponent(object : ItemUpdater {
-                    override fun update(oldItem: ItemStack): ItemStack {
-                        return ShiroiItemBuilder(plugin.messageManager, oldItem)
-                                .setName("$1${value.name}$3-$2$current")
-                                .build()
-                    }
-                }, ItemStack(value), null))
-
-                current++
+                firstScrollable.add(
+                        ItemSlotComponent(
+                                object : ItemUpdater {
+                                    override fun update(oldItem: ItemStack): ItemStack {
+                                        return ShiroiItemBuilder(plugin.messageManager, oldItem)
+                                                .setName("$1${value.name}$3-$2$index")
+                                                .build()
+                                    }
+                                }, ItemStack(value), null)
+                )
             }
         }
         background = GenericUIConstants.PRIMARY_BACKGROUND

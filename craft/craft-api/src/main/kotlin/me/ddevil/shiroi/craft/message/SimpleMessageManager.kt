@@ -16,7 +16,7 @@ open class SimpleMessageManager
 constructor(plugin: ShiroiPlugin<*, *>,
             val messageSeparator: String,
             val pluginPrefix: String,
-            translators: List<TagTranslator> = emptyList()) : AbstractMessageManager<ShiroiPlugin<*, *>>(plugin) {
+            providers: List<VariableProvider> = emptyList()) : AbstractMessageManager(plugin) {
     override fun disable() {
 
     }
@@ -32,13 +32,13 @@ constructor(plugin: ShiroiPlugin<*, *>,
         return Character.getNumericValue(i) in 1..5
     }
 
-    val translators: List<TagTranslator>
+    val providers: List<VariableProvider>
 
     init {
         val reservedNames = arrayOf("prefix", "separator")
-        this.translators = listOf(*translators.filter { !reservedNames.contains(it.tag) }.toTypedArray(),
-                TagTranslator("prefix") { pluginPrefix },
-                TagTranslator("separator") { messageSeparator }
+        this.providers = listOf(*providers.filter { !reservedNames.contains(it.tag) }.toTypedArray(),
+                VariableProvider("prefix") { pluginPrefix },
+                VariableProvider("separator") { messageSeparator }
         )
     }
 
@@ -61,7 +61,7 @@ constructor(plugin: ShiroiPlugin<*, *>,
 
     override fun translateTags(input: String): String {
         var final = input
-        for (translator in translators) {
+        for (translator in providers) {
             val tag = "{${translator.tag}}"
             if (final.contains(tag)) {
                 final = final.replace(tag, translator.translator())
@@ -100,8 +100,8 @@ constructor(plugin: ShiroiPlugin<*, *>,
         fun create(plugin: ShiroiPlugin<*, *>,
                    messageSeparator: String,
                    pluginPrefix: String,
-                   translators: List<TagTranslator> = emptyList()
-        ) = SimpleMessageManager(plugin, messageSeparator, pluginPrefix, translators)
+                   providers: List<VariableProvider> = emptyList()
+        ) = SimpleMessageManager(plugin, messageSeparator, pluginPrefix, providers)
 
         @JvmOverloads
         fun <K : FileConfigSource> create(
@@ -109,11 +109,11 @@ constructor(plugin: ShiroiPlugin<*, *>,
                 configManager: FileConfigManager<K, *>,
                 pluginPrefix: FileConfigValue<String, K>,
                 messageSeparator: FileConfigValue<String, K>,
-                translators: List<TagTranslator> = emptyList()
+                providers: List<VariableProvider> = emptyList()
         ) = create(plugin,
                 configManager.getValue(pluginPrefix),
                 configManager.getValue(messageSeparator),
-                translators)
+                providers)
 
     }
 }

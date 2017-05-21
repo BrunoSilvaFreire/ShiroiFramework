@@ -72,7 +72,7 @@ open class SimpleCommandManager(val plugin: ShiroiPlugin<*, *>) : CommandManager
             // build command name
             val buffer = StringBuilder()
             buffer.append(label.toLowerCase())
-            for (x in 0 .. i - 1) {
+            for (x in 0..i - 1) {
                 buffer.append(".").append(args[x].toLowerCase())
             }
             val cmdLabel = buffer.toString()
@@ -106,6 +106,13 @@ open class SimpleCommandManager(val plugin: ShiroiPlugin<*, *>) : CommandManager
             }
         }
         messageManager.sendMessage(sender, "$4Unknown command.")
+        messageManager.sendMessage(sender, "Available Commands:")
+        for (command in loadedCommands) {
+            if (sender.hasPermission(command.permission)) {
+                messageManager.sendMessage(sender,
+                        "/$2${plugin.settings.primaryAcronym} $1${command.name.replace('.', ' ')}")
+            }
+        }
         return true
     }
 
@@ -116,20 +123,20 @@ open class SimpleCommandManager(val plugin: ShiroiPlugin<*, *>) : CommandManager
         if (commands.containsKey(args.joinToString("."))) {
             return emptyList()
         }
-        val possibleComands = mutableListOf<String>()
+        val possibleCommands = mutableListOf<String>()
         commandLoop@ for ((key) in commands) {
             Bukkit.broadcastMessage("Checking command '$key'")
             val commandArguments = key.split('.')
             var commandArg: String? = null
-            for (i in 0 .. args.size - 1) {
+            for (i in 0..args.size - 1) {
                 if (commandArguments.size - 1 >= i) {
                     val currentArgument = args[i]
                     commandArg = commandArguments[i]
                     Bukkit.broadcastMessage("Checking argument '$currentArgument' vs '$commandArg' @$i")
                     if (!commandArg.equals(currentArgument, true)) {
-                        if (!possibleComands.contains(commandArg)) {
+                        if (!possibleCommands.contains(commandArg)) {
                             Bukkit.broadcastMessage("Adding $commandArg")
-                            possibleComands.add(commandArg)
+                            possibleCommands.add(commandArg)
                         } else {
                             Bukkit.broadcastMessage("Already contains $commandArg")
                         }
@@ -140,9 +147,9 @@ open class SimpleCommandManager(val plugin: ShiroiPlugin<*, *>) : CommandManager
                     Bukkit.broadcastMessage("Size too small, ${commandArguments.size - 1}/$i")
                 }
             }
-            possibleComands.add(commandArg ?: continue@commandLoop)
+            possibleCommands.add(commandArg ?: continue@commandLoop)
         }
-        return possibleComands
+        return possibleCommands
     }
 }
 

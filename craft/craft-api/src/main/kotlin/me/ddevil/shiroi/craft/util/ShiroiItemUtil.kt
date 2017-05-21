@@ -38,3 +38,14 @@ fun parseMap(map: Map<String, Any>, messageManager: MessageManager): ItemStack {
     }
     return builder.build()
 }
+
+fun ItemStack.translateText(messageManager: MessageManager) {
+    val meta = itemMeta
+    if (meta.hasDisplayName()) {
+        meta.displayName = messageManager.translateAll(meta.displayName)
+    }
+    if (meta.hasLore()) {
+        meta.lore = messageManager.translateAll(meta.lore)
+    }
+    itemMeta = meta
+}

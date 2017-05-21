@@ -9,7 +9,7 @@ import me.ddevil.shiroi.craft.plugin.ShiroiPlugin
 class DebugCommand(plugin: ShiroiPlugin<*, *>) : ShiroiCommand<ShiroiPlugin<*, *>>(plugin) {
     private var messageManager: MessageManager = this.plugin.messageManager
 
-    @Command(name = "debug.info", permission = "cmd.debug.info")
+    @Command(name = "debug", permission = "cmd.debug")
     fun debugInfo(args: CommandArgs) {
         val sender = args.sender
         messageManager.sendMessage(sender,

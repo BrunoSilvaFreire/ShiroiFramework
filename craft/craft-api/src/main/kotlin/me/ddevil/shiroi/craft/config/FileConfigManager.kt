@@ -8,5 +8,6 @@ interface FileConfigManager<K : FileConfigSource, out C : FileConfiguration> : C
     fun <T : Any> getValue(value: FileConfigValue<T, K>): T
 
     fun getSource(key: K): C
+
     fun getFile(key: K): File
 }
