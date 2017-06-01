@@ -10,13 +10,13 @@ class GenericConfigValue<out T : Any>(override val source: GenericConfigSource,
                                       override val defaultValue: T) : FileConfigValue<T, GenericConfigSource> {
     companion object {
         val COLOR_DESIGN = GenericConfigValue(GenericConfigSource.MAIN_CONFIG,
-                "plugin.colorDesign",
+                "prefix.colorDesign",
                 createConfig(PluginColorDesign(MinecraftColor.AQUA, MinecraftColor.DARK_AQUA).serialize()))
         val PLUGIN_PREFIX = GenericConfigValue(GenericConfigSource.MESSAGES_CONFIG,
-                "plugin.prefix",
+                "prefix.prefix",
                 "$1Generic$2Plugin")
         val MESSAGE_SEPARATOR = GenericConfigValue(GenericConfigSource.MESSAGES_CONFIG,
-                "plugin.messageSeparator",
+                "prefix.messageSeparator",
                 " &6&l> $3")
     }
 

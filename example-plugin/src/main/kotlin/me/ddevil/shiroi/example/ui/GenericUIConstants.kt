@@ -4,14 +4,14 @@ import me.ddevil.shiroi.craft.util.ShiroiItemBuilder
 import me.ddevil.shiroi.example.GenericPlugin
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
-import kotlin.properties.Delegates
 
 object GenericUIConstants {
-    var PRIMARY_BACKGROUND: ItemStack by Delegates.notNull<ItemStack>()
+    lateinit var PRIMARY_BACKGROUND: ItemStack
         private set
-    var SECONDARY_BACKGROUND: ItemStack by Delegates.notNull<ItemStack>()
+    lateinit var SECONDARY_BACKGROUND: ItemStack
         private set
-    var MENU: GenericMenu by Delegates.notNull<GenericMenu>()
+    lateinit var MENU: GenericMenu
+        private set
 
     fun setup(plugin: GenericPlugin) {
         PRIMARY_BACKGROUND = ShiroiItemBuilder(plugin.messageManager, Material.IRON_FENCE)
@@ -22,6 +22,6 @@ object GenericUIConstants {
                 .setName("&r")
                 .build()
         this.MENU = GenericMenu(plugin)
-        MENU.register()
+        this.MENU.register()
     }
 }

@@ -30,6 +30,9 @@ constructor(
     }
 
     override fun place0(drawable: H, x: Int, y: Int) {
+        if (debug) {
+            println("Setting $drawable @ $x, $y")
+        }
         map[x][y] = drawable
     }
 
@@ -48,9 +51,9 @@ constructor(
 
     override fun getMenuMap(): SortedMap<UIPosition, H> {
         val map = TreeMap<UIPosition, H>()
-        for (x in 0 .. width - 1) {
-            for (y in 0 .. height - 1) {
-                val h = get(x, y) ?: continue
+        for (x in 0..width - 1) {
+            for (y in 0..height - 1) {
+                val h = this[x, y] ?: continue
                 map[UIPosition(x, y)] = h
             }
         }
@@ -58,8 +61,8 @@ constructor(
     }
 
     override fun getPosition(drawable: H): UIPosition? {
-        for (x in 0 .. width - 1) {
-            for (y in 0 .. height - 1) {
+        for (x in 0..width - 1) {
+            for (y in 0..height - 1) {
                 val h = get(x, y) ?: continue
                 if (h == drawable) {
                     return UIPosition(x, y)
@@ -70,8 +73,8 @@ constructor(
     }
 
     override fun clear() {
-        for (x in 0 .. width - 1) {
-            for (y in 0 .. height - 1) {
+        for (x in 0..width - 1) {
+            for (y in 0..height - 1) {
                 remove(x, y)
             }
         }
@@ -80,8 +83,8 @@ constructor(
     override val components: List<H>
         get() {
             val map = mutableListOf<H>()
-            for (x in 0 .. width - 1) {
-                for (y in 0 .. height - 1) {
+            for (x in 0..width - 1) {
+                for (y in 0..height - 1) {
                     map.add(get(x, y) ?: continue)
                 }
             }

@@ -39,6 +39,9 @@ interface Scrollable<D : Drawable> : Holder<D> {
      */
     val pageSize: Int
 
+    val pageWidth: Int
+
+    val pageHeight: Int
     /**
      * Checks if there is a object in the specified [position]
      */

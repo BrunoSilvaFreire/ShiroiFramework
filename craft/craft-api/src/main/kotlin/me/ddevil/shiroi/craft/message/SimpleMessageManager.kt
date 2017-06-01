@@ -3,6 +3,7 @@ package me.ddevil.shiroi.craft.message
 import me.ddevil.shiroi.craft.config.FileConfigManager
 import me.ddevil.shiroi.craft.config.FileConfigSource
 import me.ddevil.shiroi.craft.config.FileConfigValue
+import me.ddevil.shiroi.craft.misc.variable.VariableProvider
 import me.ddevil.shiroi.craft.plugin.ShiroiPlugin
 import me.ddevil.shiroi.util.DEFAULT_SHIROI_COLOR_CHAR
 import me.ddevil.shiroi.util.DEFAULT_SHIROI_DESIGN_COLOR_CHAR
@@ -13,10 +14,13 @@ import org.bukkit.command.CommandSender
 
 
 open class SimpleMessageManager
-constructor(plugin: ShiroiPlugin<*, *>,
-            val messageSeparator: String,
-            val pluginPrefix: String,
-            providers: List<VariableProvider> = emptyList()) : AbstractMessageManager(plugin) {
+@JvmOverloads
+constructor(
+        plugin: ShiroiPlugin<*, *>,
+        val messageSeparator: String,
+        val pluginPrefix: String,
+        providers: List<VariableProvider> = emptyList()
+) : AbstractMessageManager(plugin) {
     override fun disable() {
 
     }
@@ -35,10 +39,13 @@ constructor(plugin: ShiroiPlugin<*, *>,
     val providers: List<VariableProvider>
 
     init {
-        val reservedNames = arrayOf("prefix", "separator")
-        this.providers = listOf(*providers.filter { !reservedNames.contains(it.tag) }.toTypedArray(),
-                VariableProvider("prefix") { pluginPrefix },
-                VariableProvider("separator") { messageSeparator }
+        val reservedNames = arrayOf(
+                PluginPrefixVariableProvider.PREFIX_VARIABLE_NAME,
+                MessageSeparatorVariableProvider.SEPARATOR_VARIABLE_NAME
+        )
+        this.providers = listOf(*providers.filter { !reservedNames.contains(it.provide().name) }.toTypedArray(),
+                PluginPrefixVariableProvider(pluginPrefix),
+                MessageSeparatorVariableProvider(messageSeparator)
         )
     }
 
@@ -62,9 +69,10 @@ constructor(plugin: ShiroiPlugin<*, *>,
     override fun translateTags(input: String): String {
         var final = input
         for (translator in providers) {
-            val tag = "{${translator.tag}}"
+            val variable = translator.provide()
+            val tag = variable.replacer
             if (final.contains(tag)) {
-                final = final.replace(tag, translator.translator())
+                final = final.replace(tag, variable.value)
             }
         }
         return final

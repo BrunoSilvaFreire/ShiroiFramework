@@ -15,10 +15,11 @@ class ReloadCommand(plugin: ShiroiPlugin<*, *>) : ShiroiCommand<ShiroiPlugin<*, 
         val sender = args.sender
         messageManager.sendMessage(sender, "$3Reloading plugin...")
         val start = System.currentTimeMillis()
-        plugin.reload()
+        plugin.reload(sender)
         val end = System.currentTimeMillis()
         val duration = end - start
         ShiroiPluginReloadEvent(plugin).call()
-        messageManager.sendMessage(sender, "$3Reloaded! Took $1$duration$3ms! ($2${(duration / 1000).toInt()}$3s)")
+        messageManager.sendMessage(sender,
+                "$3Reload complete! Took $1$duration$3ms! ($2${(duration / 1000).toInt()}$3s)")
     }
 }

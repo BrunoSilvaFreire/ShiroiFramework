@@ -3,6 +3,7 @@ package me.ddevil.shiroi.craft.config
 import me.ddevil.shiroi.craft.misc.design.PluginColorDesign
 import me.ddevil.shiroi.craft.plugin.ShiroiPlugin
 import me.ddevil.shiroi.craft.util.toMap
+import org.bukkit.command.CommandSender
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.configuration.file.FileConfiguration
 import java.io.File
@@ -76,6 +77,15 @@ constructor(
             plugin.saveResource(key.resourcePath, file)
         }
         return file
+    }
+
+    override fun reload(sender: CommandSender) {
+        val totalFiles = loadedConfigFiles.size
+        loadedConfigFiles.clear()
+        plugin.messageManager.sendMessage(sender, "Unloaded $1$totalFiles $3config files.")
+        val totalValues = loadedValues.size
+        loadedValues.clear()
+        plugin.messageManager.sendMessage(sender, "Unloaded $1$totalValues $3cached values.")
     }
 
     override fun reload() {

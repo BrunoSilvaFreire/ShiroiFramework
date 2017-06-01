@@ -55,4 +55,7 @@ class PluginColorDesign : ColorDesign, ConfigurationSerializable {
 
     override fun toString() = "PluginColorDesign(primaryColor=$primaryColor, secondaryColor=$secondaryColor, neutralColor=$neutralColor, warningColor=$warningColor, successColor=$successColor)"
 
+    val demonstration
+        get() = "${primaryColor}p, ${secondaryColor}s, ${neutralColor}n, ${warningColor}w, ${successColor}ok"
+
 }

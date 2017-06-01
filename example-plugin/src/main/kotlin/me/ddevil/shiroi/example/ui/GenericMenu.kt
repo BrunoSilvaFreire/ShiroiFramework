@@ -6,6 +6,7 @@ import me.ddevil.shiroi.ui.api.component.CloseButton
 import me.ddevil.shiroi.ui.api.component.SlotComponent
 import me.ddevil.shiroi.ui.api.component.container.MenuSize
 import me.ddevil.shiroi.ui.api.component.misc.ItemSlotComponent
+import me.ddevil.shiroi.ui.api.component.scrollable.SimpleScrollable
 import me.ddevil.shiroi.ui.api.component.scrollable.UnderPanelScrollable
 import me.ddevil.shiroi.ui.api.updater.ItemUpdater
 import me.ddevil.shiroi.ui.shiroi.ShiroiMenu
@@ -19,14 +20,11 @@ class GenericMenu(plugin: GenericPlugin) : ShiroiMenu<GenericPlugin>(
         MenuSize.SIX_ROWS,
         GenericUIConstants.PRIMARY_BACKGROUND
 ) {
-    private val firstScrollable = UnderPanelScrollable(
+    private val firstScrollable = SimpleScrollable(
             SlotComponent::class.java,
-            this,
             4,
             3,
-            ShiroiScrollerUpdater(Material.EMERALD, plugin),
-            GenericUIConstants.SECONDARY_BACKGROUND,
-            GenericUIConstants.PRIMARY_BACKGROUND)
+            GenericUIConstants.SECONDARY_BACKGROUND)
 
     private val secondScrollable = UnderPanelScrollable(
             SlotComponent::class.java,
@@ -48,9 +46,9 @@ class GenericMenu(plugin: GenericPlugin) : ShiroiMenu<GenericPlugin>(
 
 
     init {
+        debug = true
         place(firstScrollable, 0, 0)
         place(secondScrollable, 5, 0)
-        place(thirdScrollable, 0, 3)
         for ((index, value) in Material.values().withIndex()) {
             if (value.isOccluding) {
                 firstScrollable.add(
@@ -65,7 +63,7 @@ class GenericMenu(plugin: GenericPlugin) : ShiroiMenu<GenericPlugin>(
                 )
             }
         }
-        background = GenericUIConstants.PRIMARY_BACKGROUND
+        this.background = GenericUIConstants.PRIMARY_BACKGROUND
         place(CloseButton(ShiroiItemBuilder(plugin.messageManager, Material.BARRIER)
                 .setName("$4Close")
                 .build()), 8, 5)

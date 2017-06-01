@@ -3,13 +3,12 @@ package me.ddevil.shiroi.craft.message.lang
 import me.ddevil.shiroi.craft.config.FileConfigManager
 import me.ddevil.shiroi.craft.config.FileConfigSource
 import me.ddevil.shiroi.craft.config.FileConfigValue
-import me.ddevil.shiroi.craft.message.VariableProvider
+import me.ddevil.shiroi.craft.misc.variable.VariableProvider
 import me.ddevil.shiroi.craft.plugin.ShiroiPlugin
 
 open class FileLangMessageManager<
-        in L : Lang<V>,
         out S : FileConfigSource,
-        out V : FileConfigValue<String, S>> : AbstractLangMessageManager<L> {
+        V : FileConfigValue<String, S>> : AbstractLangMessageManager<V> {
 
 
     constructor(
@@ -41,7 +40,7 @@ open class FileLangMessageManager<
         this.configManager = configManager
     }
 
-    override fun getLang(lang: L) = configManager.getValue(lang.key)
+    override fun getLang(lang: Lang<V>) = configManager.getValue(lang.key)
 
 
     private var configManager: FileConfigManager<S, *>

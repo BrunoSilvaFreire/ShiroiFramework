@@ -14,8 +14,9 @@ constructor(
         override var background: ItemStack?,
         id: String?
 ) : AbstractAreaComponent(width, height, id), Holder<D> {
-    private val _listeners: MutableSet<HolderClickListener<D>> = mutableSetOf()
+    override var debug: Boolean = false
 
+    private val _listeners: MutableSet<HolderClickListener<D>> = mutableSetOf()
     override val listeners: Set<HolderClickListener<D>>
         get() = HashSet(_listeners)
 

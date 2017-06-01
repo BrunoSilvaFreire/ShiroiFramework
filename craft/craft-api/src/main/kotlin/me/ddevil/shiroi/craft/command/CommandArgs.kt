@@ -1,8 +1,9 @@
 package me.ddevil.shiroi.craft.command
 
+import me.ddevil.shiroi.craft.config.ConfigValue
 import me.ddevil.shiroi.craft.message.lang.Lang
 import me.ddevil.shiroi.craft.message.lang.LangMessageManager
-import me.ddevil.shiroi.craft.message.lang.MessageVariable
+import me.ddevil.shiroi.craft.misc.variable.MessageVariable
 import me.ddevil.shiroi.craft.plugin.ShiroiPlugin
 import org.bukkit.Bukkit
 import org.bukkit.command.Command
@@ -46,7 +47,7 @@ class CommandArgs(
         System.arraycopy(args, subCommand, modArgs, 0, args.size - subCommand)
         val buffer = StringBuilder()
         buffer.append(label)
-        for (x in 0 .. subCommand - 1) {
+        for (x in 0..subCommand - 1) {
             buffer.append(".").append(args[x])
         }
         val cmdLabel = buffer.toString()
@@ -94,7 +95,7 @@ class CommandArgs(
             istart++
         }
         if (length() > istart) {
-            for (i in start .. args.size - 1) {
+            for (i in start..args.size - 1) {
                 if (i > end) {
                     break
                 }
@@ -178,11 +179,11 @@ class CommandArgs(
         }, action)
     }
 
-    inline fun <L : Lang<*>> getStringOrMessage(index: Int,
-                                                lang: L,
-                                                messageManager: LangMessageManager<L>,
-                                                vararg variables: MessageVariable,
-                                                action: (String) -> Unit) {
+    inline fun <L : ConfigValue<String, *>> getStringOrMessage(index: Int,
+                                                               lang: Lang<L>,
+                                                               messageManager: LangMessageManager<L>,
+                                                               vararg variables: MessageVariable,
+                                                               action: (String) -> Unit) {
         getStringOrElse(index, {
             messageManager.sendMessage(sender, lang, *variables)
         }, action)
@@ -196,11 +197,11 @@ class CommandArgs(
         }, action)
     }
 
-    inline fun <L : Lang<*>> getIntOrMessage(
+    inline fun <L : ConfigValue<String, *>> getIntOrMessage(
             index: Int,
-            orElse: L,
+            orElse: Lang<L>,
             orElseVariables: () -> Array<MessageVariable>,
-            invalidInt: L,
+            invalidInt: Lang<L>,
             invalidIntVariables: () -> Array<MessageVariable>,
             messageManager: LangMessageManager<L>,
             action: (Int) -> Unit) {
@@ -220,11 +221,11 @@ class CommandArgs(
         }, action)
     }
 
-    inline fun <L : Lang<*>> getDoubleOrMessage(
+    inline fun <L : ConfigValue<String, *>> getDoubleOrMessage(
             index: Int,
-            orElse: L,
+            orElse: Lang<L>,
             orElseVariables: () -> Array<MessageVariable>,
-            invalidDouble: L,
+            invalidDouble: Lang<L>,
             invalidDoubleVariables: () -> Array<MessageVariable>,
             messageManager: LangMessageManager<L>,
             action: (Double) -> Unit) {
@@ -243,11 +244,11 @@ class CommandArgs(
         }, action)
     }
 
-    inline fun <L : Lang<*>> getLongOrMessage(
+    inline fun <L : ConfigValue<String, *>> getLongOrMessage(
             index: Int,
-            orElse: L,
+            orElse: Lang<L>,
             orElseVariables: () -> Array<MessageVariable>,
-            invalidLong: L,
+            invalidLong: Lang<L>,
             invalidLongVariables: () -> Array<MessageVariable>,
             messageManager: LangMessageManager<L>,
             action: (Long) -> Unit) {
@@ -266,11 +267,11 @@ class CommandArgs(
         }, action)
     }
 
-    inline fun <L : Lang<*>> getFloatOrMessage(
+    inline fun <L : ConfigValue<String, *>> getFloatOrMessage(
             index: Int,
-            orElse: L,
+            orElse: Lang<L>,
             orElseVariables: () -> Array<MessageVariable>,
-            invalidFloat: L,
+            invalidFloat: Lang<L>,
             invalidFloatVariables: () -> Array<MessageVariable>,
             messageManager: LangMessageManager<L>,
             action: (Float) -> Unit) {

@@ -1,7 +1,6 @@
 package me.ddevil.shiroi.ui.api.component.scrollable
 
 import com.google.common.collect.ImmutableMap
-import com.google.common.collect.ImmutableSortedSet
 import me.ddevil.shiroi.ui.api.UIPosition
 import me.ddevil.shiroi.ui.api.component.Clickable
 import me.ddevil.shiroi.ui.api.component.Component
@@ -25,83 +24,13 @@ constructor(
         updater: ScrollerUpdater<Scrollable<*>>,
         background: ItemStack? = null,
         lowPanelBackground: ItemStack? = null,
-        onClickEmptyAction: Action? = null,
         id: String? = null
-) : SimpleScrollable<H>(expectedType, width, height - 1, background, id, onClickEmptyAction) {
+) : AbstractScrollable<H>(expectedType, width, height, width, height - 1, background, id) {
+
 
     private val lowPanel: MutableMap<Int, SlotComponent<*>>
     var lowPanelBackground: ItemStack? = null
-
-
-    init {
-        if (height < 1) {
-            throw IllegalArgumentException("A low paned scrollable requires a minimum height of 2! Or maybe you could also use a SingleLaneScrollable :D")
-        }
-        action = PanelScrollableClickHandler()
-        this.lowPanelBackground = lowPanelBackground
-        this.lowPanel = HashMap<Int, SlotComponent<*>>()
-        lowPanel.put(0, PageScroller(menu, this, ScrollDirection.PREVIOUS, updater))
-        lowPanel.put(width - 1, PageScroller(menu, this, ScrollDirection.NEXT, updater))
-    }
-
-    private inner class PanelScrollableClickHandler : Action {
-
-
-        override fun invoke(e: UIClickEvent, localPosition: UIPosition) {
-            val clickedSlot = localPosition.toInvSlot(width)
-            var obj: Component? = null
-            val currentPage = this@UnderPanelScrollable.currentPage
-            if (localPosition.y == maxY) {
-                //Was on panel
-                val x = localPosition.x
-                if (lowPanel.containsKey(x)) {
-                    obj = lowPanel[x]
-                }
-            } else if (currentPage.containsKey(clickedSlot)) {
-                obj = currentPage[clickedSlot]
-            }
-            val objLocalPos = e.clickedSlot - localPosition
-            if (obj != null) {
-                obj.update()
-                if (obj is Clickable) {
-                    val c = obj
-                    c.action.invoke(e, objLocalPos)
-                    UIActionEvent(c, e.clickedSlot, e.player, e.clickType, e.placedBlock).call()
-                }
-            } else if (onClickEmptyAction != null) {
-                onClickEmptyAction!!.invoke(e, objLocalPos)
-            }
-        }
-    }
-
-    override val size: Int
-        get() = (height + 1) * width
-
-    override val area: SortedSet<UIPosition>
-        get() {
-            val menuPositionBuilder = ImmutableSortedSet.Builder(Comparator<UIPosition>(UIPosition::compareTo))
-            for (x in 0 .. maxX) {
-                for (y in 0 .. maxY) {
-                    menuPositionBuilder.add(UIPosition(x, y))
-                }
-            }
-            return menuPositionBuilder.build()
-        }
-
-    override fun draw(): Map<UIPosition, ItemStack> {
-        val builder = ImmutableMap.Builder<UIPosition, ItemStack>().putAll(draw(0, width - 1, 0, height - 2))
-        for (x in 0 .. width - 1) {
-            val item = lowPanel[x]
-            val pos = UIPosition(x, maxY)
-            if (item != null) {
-                item.update()
-                builder.put(pos, item.icon)
-            } else if (hasLowPanelBackground()) {
-                builder.put(pos, lowPanelBackground!!)
-            }
-        }
-        return builder.build()
-    }
+    override val action: Action
 
     fun hasObjectInLowPanel(slot: Int): Boolean {
         return lowPanel.containsKey(slot)
@@ -124,12 +53,112 @@ constructor(
         return lowPanelBackground != null
     }
 
-    override var height: Int
-        get() {
-            return super.height + 1
+    init {
+        if (height < 1) {
+            throw IllegalArgumentException("A low paned scrollable requires a minimum height of 2! Or maybe you could also use a SingleLaneScrollable :D")
         }
-        set(value) {
-            super.height = value
+        this.action = PanelScrollableClickHandler()
+        this.lowPanelBackground = lowPanelBackground
+        this.lowPanel = HashMap<Int, SlotComponent<*>>()
+        lowPanel.put(0, PageScroller(menu, this, ScrollDirection.PREVIOUS, updater))
+        lowPanel.put(width - 1, PageScroller(menu, this, ScrollDirection.NEXT, updater))
+    }
+
+    private inner class PanelScrollableClickHandler : Action {
+
+
+        override fun invoke(e: UIClickEvent, localPosition: UIPosition) {
+            val clickedSlot = localPosition.toInvSlot(width)
+            var obj: Component? = null
+            val currentPage = this@UnderPanelScrollable.currentPage
+            var pageObj: H? = null
+            if (localPosition.y == maxY) {
+                //Was on panel
+                val x = localPosition.x
+                if (lowPanel.containsKey(x)) {
+                    obj = lowPanel[x]
+                }
+            } else if (currentPage.containsKey(clickedSlot)) {
+                pageObj = currentPage[clickedSlot]
+                obj = pageObj
+            }
+            val objLocalPos = e.clickedSlot - localPosition
+            if (obj != null) {
+                obj.update()
+                if (obj is Clickable) {
+                    val c = obj
+                    c.action.invoke(e, objLocalPos)
+                    UIActionEvent(c, e.clickedSlot, e.player, e.clickType, e.placedBlock).call()
+                }
+            }
+            for (listener in listeners) {
+                listener.onClick(pageObj)
+            }
+
         }
+    }
+
+    override fun draw(fromX: Int, toX: Int, fromY: Int, toY: Int): Map<UIPosition, ItemStack> {
+        val builder = ImmutableMap.Builder<UIPosition, ItemStack>()
+        val addedObjects = HashSet<Component>()
+        if (debug) {
+            println("Drawing component '$this'")
+        }
+        val xRange = fromX..toX
+        val yRange = fromY..toY
+        for (y in 0..pageHeight - 1) {
+            if (y !in yRange) {
+                break
+            }
+            for (x in 0..pageWidth - 1) {
+                if (x !in xRange) {
+                    break
+                }
+                val currentPos = UIPosition(x, y)
+                val uiObject = currentPage[currentPos.toInvSlot(width)]
+                if (uiObject != null) {
+                    if (uiObject !in addedObjects) {
+                        addedObjects.add(uiObject)
+                        val childUI = uiObject.draw()
+                        for ((childPos, item) in childUI) {
+                            builder.put(childPos + currentPos, item)
+                        }
+
+                        if (debug) {
+                            println("Drawing child component $uiObject  @ $currentPos")
+                        }
+                    } else {
+                        println("Found object $uiObject  @ $currentPos, but was already drawn, skipping.")
+                    }
+                } else if (hasBackground()) {
+                    builder.put(currentPos, background)
+
+                    if (debug) {
+                        println("No component @ $currentPos, using background.")
+                    }
+                } else if (debug) {
+                    println("No component @ $currentPos and no background.")
+                }
+            }
+        }
+        if (maxY in yRange) {
+            for (x in 0..pageWidth - 1) {
+                if (x !in xRange) {
+                    break
+                }
+                val panelObj = lowPanel[x]
+                if (panelObj != null) {
+                    val currentPos = UIPosition(x, maxY)
+                    val childUI = panelObj.draw()
+                    for ((childPos, item) in childUI) {
+                        builder.put(childPos + currentPos, item)
+                    }
+                }
+            }
+        }
+        return builder.build()
+    }
+
+
 }
 

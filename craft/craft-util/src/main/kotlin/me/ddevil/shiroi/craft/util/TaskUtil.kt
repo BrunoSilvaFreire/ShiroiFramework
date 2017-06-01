@@ -11,46 +11,47 @@ fun createBukkitTask(runnable: Runnable) = object : BukkitRunnable() {
     override fun run() = runnable.run()
 }
 
-private fun createAndRunBukkitTask(action: () -> Unit, starter: (BukkitRunnable) -> Unit): BukkitRunnable {
+private fun createAndRunBukkitTask(starter: (BukkitRunnable) -> Unit,
+                                   action: () -> Unit): BukkitRunnable {
     val task = createBukkitTask(action)
     starter(task)
     return task
 }
 
-fun createAndRunBukkitTaskSync(action: () -> Unit, plugin: Plugin) = createAndRunBukkitTask(action) {
+fun createAndRunBukkitTaskSync(plugin: Plugin, action: () -> Unit) = createAndRunBukkitTask({
     it.runTask(plugin)
-}
+}, action)
 
-fun createAndRunBukkitTaskLaterSync(action: () -> Unit, plugin: Plugin, delay: Long) = createAndRunBukkitTask(action) {
+fun createAndRunBukkitTaskLaterSync(plugin: Plugin, delay: Long, action: () -> Unit) = createAndRunBukkitTask({
     it.runTaskLater(plugin, delay)
-}
+}, action)
 
 @JvmOverloads
 fun createAndRunBukkitTaskTimerSync(
         action: () -> Unit,
         plugin: Plugin,
         period: Long,
-        delay: Long = period) = createAndRunBukkitTask(action) {
+        delay: Long = period) = createAndRunBukkitTask({
     it.runTaskTimer(plugin, delay, period)
-}
+}, action)
 
 
-fun createAndRunBukkitTaskAsync(action: () -> Unit, plugin: Plugin) = createAndRunBukkitTask(action) {
+fun createAndRunBukkitTaskAsync(action: () -> Unit, plugin: Plugin) = createAndRunBukkitTask({
     it.runTaskAsynchronously(plugin)
-}
+}, action)
 
-fun createAndRunBukkitTaskLaterAsync(action: () -> Unit, plugin: Plugin, delay: Long) = createAndRunBukkitTask(action) {
+fun createAndRunBukkitTaskLaterAsync(action: () -> Unit, plugin: Plugin, delay: Long) = createAndRunBukkitTask({
     it.runTaskLaterAsynchronously(plugin, delay)
-}
+}, action)
 
 @JvmOverloads
 fun createAndRunBukkitTaskTimerAsync(
         action: () -> Unit,
         plugin: Plugin,
         period: Long,
-        delay: Long = period) = createAndRunBukkitTask(action) {
+        delay: Long = period) = createAndRunBukkitTask({
     it.runTaskTimerAsynchronously(plugin, delay, period)
-}
+}, action)
 
 private fun createAndRunBukkitTask(runnable: Runnable, starter: (BukkitRunnable) -> Unit): BukkitRunnable {
     val task = createBukkitTask(runnable)

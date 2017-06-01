@@ -3,16 +3,26 @@ package me.ddevil.shiroi.craft.message
 import me.ddevil.shiroi.craft.misc.design.PluginColorDesign
 import me.ddevil.shiroi.craft.plugin.ShiroiPlugin
 import org.bukkit.Bukkit
+import org.bukkit.command.CommandSender
 
 abstract class AbstractMessageManager(val plugin: ShiroiPlugin<*, *>) : MessageManager {
 
     var colorDesign: PluginColorDesign = plugin.colorDesign
         protected set
 
+    final override fun reload(sender: CommandSender) {
+        this.colorDesign = plugin.colorDesign
+        sendMessage(sender, "Reloaded ColorDesign for MessageManager.")
+        reload0(sender)
+    }
+
+
     final override fun reload() {
         this.colorDesign = plugin.colorDesign
         reload0()
     }
+
+    open fun reload0(sender: CommandSender) {}
 
     open fun reload0() {
     }

@@ -3,17 +3,34 @@ package me.ddevil.shiroi.craft.command.internal
 import me.ddevil.shiroi.craft.command.Command
 import me.ddevil.shiroi.craft.command.CommandArgs
 import me.ddevil.shiroi.craft.command.ShiroiCommand
+import me.ddevil.shiroi.craft.log.DebugLevel
 import me.ddevil.shiroi.craft.message.MessageManager
 import me.ddevil.shiroi.craft.plugin.ShiroiPlugin
+import me.ddevil.util.enumValueWithIndex
 
 class DebugCommand(plugin: ShiroiPlugin<*, *>) : ShiroiCommand<ShiroiPlugin<*, *>>(plugin) {
     private var messageManager: MessageManager = this.plugin.messageManager
+
+    @Command(name = "debug.level", permission = "cmd.debug.level")
+    fun debugLevel(args: CommandArgs) {
+        val sender = args.sender
+        args.getIntOrElse(0, {
+            val level = plugin.pluginLogger.minimumDebugLevel
+            plugin.messageManager.sendMessage(sender, "Current debug level: $1$level")
+        }, {
+            plugin.messageManager.sendMessage(sender, "$4You must provide a valid integer!")
+        }) {
+            val newLevel = enumValueWithIndex<DebugLevel>(it)
+            plugin.pluginLogger.minimumDebugLevel = newLevel
+            messageManager.sendMessage(sender, "Debug level was set to $1$newLevel")
+        }
+    }
 
     @Command(name = "debug", permission = "cmd.debug")
     fun debugInfo(args: CommandArgs) {
         val sender = args.sender
         messageManager.sendMessage(sender,
-                "$3Debug info for plugin: $1${plugin.name}",
+                "$3Debug info for prefix: $1${plugin.name}",
                 "",
                 "$3[$1Plugin Internal Settings$3]",
                 "$3Primary Acronym: $2${plugin.settings.primaryAcronym}",

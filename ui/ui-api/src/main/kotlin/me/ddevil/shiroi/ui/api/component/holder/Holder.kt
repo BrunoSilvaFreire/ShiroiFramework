@@ -111,5 +111,10 @@ interface Holder<D : Drawable> : AreaComponent, Backgroundable, Clickable {
     fun addListener(listener: HolderClickListener<D>)
 
     fun removeListener(listener: HolderClickListener<D>)
+
+    /**
+     * Defines if debug messages should be sent to the console when drawing this component.
+     */
+    var debug: Boolean
 }
 

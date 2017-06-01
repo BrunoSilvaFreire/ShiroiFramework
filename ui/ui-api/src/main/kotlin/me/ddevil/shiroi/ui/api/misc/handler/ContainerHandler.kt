@@ -5,7 +5,7 @@ import me.ddevil.shiroi.ui.api.component.Drawable
 import me.ddevil.shiroi.ui.api.component.container.Container
 
 class ContainerHandler<D : Drawable>(container: Container<D>,
-                                     onClickAction: ((D) -> Unit)?) : AbstractHolderHandler<Container<D>, D>(container,
+                                     onClickAction: ((D?) -> Unit)?) : AbstractHolderHandler<Container<D>, D>(container,
         onClickAction) {
 
     override fun getPosition(container: Container<D>, component: D): UIPosition {

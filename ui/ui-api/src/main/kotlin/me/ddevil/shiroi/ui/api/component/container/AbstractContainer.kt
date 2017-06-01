@@ -29,15 +29,6 @@ constructor(
         get() = handler
 
     //</editor-fold>
-
-    init {
-        this.handler = ContainerHandler(this) { drawable ->
-            listeners.forEach {
-                it.onClick(drawable)
-            }
-        }
-    }
-
     //<editor-fold defaultstate="collapsed" desc="Removing methods">
     override fun remove(component: D) {
         remove(getPosition(component) ?: throw IllegalStateException("Couldn't find position for component $component"))
@@ -82,9 +73,10 @@ constructor(
         if (contains(x, y)) {
             val found = get(x, y)
             if (found == null) {
-                place0(drawable, x, y)
                 if (drawable is AreaComponent) {
                     addAreaObject(drawable, x, y)
+                } else {
+                    place0(drawable, x, y)
                 }
             } else {
                 throw IllegalArgumentException("There is already a different object in position $x, $y ($found)!")
@@ -98,9 +90,10 @@ constructor(
         if (contains(position)) {
             val found = get(position)
             if (found == null) {
-                place0(drawable, position)
                 if (drawable is AreaComponent) {
                     addAreaObject(drawable, position)
+                } else {
+                    place0(drawable, position)
                 }
             } else {
                 throw PositionAlreadyOccupiedException(position, found)
@@ -126,13 +119,15 @@ constructor(
     private fun addAreaObject(drawable: AreaComponent, x: Int, y: Int) {
         for (ix in 0..drawable.width - 1) {
             for (iy in 0..drawable.height - 1) {
-                if (hasObjectIn(ix + x, iy + y)) {
-                    val found = get(ix + x, iy + y)
+                val finalX = ix + x
+                val finalY = iy + y
+                if (hasObjectIn(finalX, finalY)) {
+                    val found = this[finalX, finalY]
                     if (found != drawable) {
                         throw IllegalArgumentException("There is already a different object in position $x, $y ($found)!")
                     }
                 }
-                place0(drawable as D, ix + x, iy + y)
+                place0(drawable as D, finalX, finalY)
             }
         }
     }
@@ -140,7 +135,16 @@ constructor(
     //<editor-fold defaultstate="collapsed" desc="Containment Handling">
 
     override fun remove(position: UIPosition) = remove(position.x, position.y)
+
     //</editor-fold>
+    init {
+        this.handler = ContainerHandler(this) { drawable ->
+            for (listener in listeners) {
+                listener.onClick(drawable)
+            }
+        }
+    }
+
 
     /**
      * Checks if the given component is currently visible (will be displayed when drawn) in this holder.
@@ -154,32 +158,42 @@ constructor(
 
     override fun getCurrentPositionOf(child: D): UIPosition = getPosition(child) ?: throw IllegalStateException("Holder does not contain child $child!")
 
-    override fun draw(from: UIPosition, to: UIPosition) = draw(from.x, to.x, from.y, to.y)
-    override fun draw(): Map<UIPosition, ItemStack> {
-        return super.draw()
-    }
-
     override fun draw(fromX: Int, toX: Int, fromY: Int, toY: Int): Map<UIPosition, ItemStack> {
         val objMap = getMenuMap()
         val builder = ImmutableMap.Builder<UIPosition, ItemStack>()
         val addedObjects = HashSet<Component>()
+        if (debug) {
+            println("Drawing component '$this'")
+            println("Object Map: $objMap")
+        }
         for (y in fromY..toY) {
             for (x in fromX..toX) {
                 val currentPos = UIPosition(x, y)
-                val uiObject = objMap[currentPos]
+                val uiObject = this[x, y]
                 if (uiObject != null) {
-                    if (!addedObjects.contains(uiObject)) {
+                    if (uiObject !in addedObjects) {
                         addedObjects.add(uiObject)
                         val childUI = uiObject.draw()
-                        childUI.forEach { builder.put(currentPos + it.key, it.value) }
+                        for ((childPos, item) in childUI) {
+                            builder.put(currentPos + childPos, item)
+                        }
+                        if (debug) {
+                            println("Drawing child component $uiObject  @ $currentPos")
+                        }
+                    } else {
+                        println("Found object $uiObject  @ $currentPos, but was already drawn, skipping.")
                     }
                 } else if (hasBackground()) {
                     builder.put(currentPos, background!!)
+                    if (debug) {
+                        println("No component @ $currentPos, using background.")
+                    }
+                } else if (debug) {
+                    println("No component @ $currentPos and no background.")
                 }
             }
         }
         return builder.build()
-
     }
 
 }

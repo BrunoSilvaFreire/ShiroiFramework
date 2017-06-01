@@ -18,12 +18,14 @@ open class SimpleCommandManager(val plugin: ShiroiPlugin<*, *>) : CommandManager
     private val commandMap: CommandMap
 
     init {
-        val manager = plugin.server.pluginManager as? SimplePluginManager ?: throw IllegalStateException("Unknown plugin manager!")
+        val manager = plugin.server.pluginManager as? SimplePluginManager ?: throw IllegalStateException("Unknown prefix manager!")
         val field = SimplePluginManager::class.java.getDeclaredField("commandMap")
         field.isAccessible = true
         commandMap = field.get(manager) as CommandMap
     }
 
+    override fun reload(sender: CommandSender) {
+    }
     override fun reload() {
     }
 
@@ -179,7 +181,7 @@ class BukkitCommand constructor(label: String,
         try {
             success = executor.onCommand(sender, this, commandLabel, args)
         } catch (ex: Throwable) {
-            throw CommandException("Unhandled exception command '" + commandLabel + "' in plugin "
+            throw CommandException("Unhandled exception command '" + commandLabel + "' in prefix "
                     + owningPlugin.description.fullName, ex)
         }
 

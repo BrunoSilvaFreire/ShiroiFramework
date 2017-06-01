@@ -1,9 +1,9 @@
 package me.ddevil.shiroi.craft.message
 
-import me.ddevil.shiroi.util.misc.Reloadable
+import me.ddevil.shiroi.craft.misc.CraftReloadable
 import org.bukkit.command.CommandSender
 
-interface MessageManager : Reloadable {
+interface MessageManager : CraftReloadable {
 
     operator fun get(i: Int): Char
 

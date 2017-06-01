@@ -10,8 +10,10 @@ import me.ddevil.shiroi.craft.message.MessageManager
 import me.ddevil.shiroi.craft.misc.design.PluginColorDesign
 import me.ddevil.shiroi.craft.misc.master.MasterConfig
 import me.ddevil.shiroi.craft.misc.task.ChainFactory
+import me.ddevil.shiroi.craft.misc.variable.VariableManager
 import me.ddevil.shiroi.craft.util.set
 import org.bukkit.Bukkit
+import org.bukkit.command.CommandSender
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.event.HandlerList
 import org.bukkit.event.Listener
@@ -29,6 +31,7 @@ abstract class AbstractPlugin<M : MessageManager, C : ConfigManager<*>> : JavaPl
     final override val chainFactory = ChainFactory(this)
     final override val masterConfig: MasterConfig
     final override val pluginLogger: PluginLogger
+    final override val variableManager: VariableManager
 
     final override var colorDesign: PluginColorDesign by Delegates.notNull<PluginColorDesign>()
 
@@ -71,20 +74,21 @@ abstract class AbstractPlugin<M : MessageManager, C : ConfigManager<*>> : JavaPl
         } else {
             this.masterConfig = MasterConfig(YamlConfiguration.loadConfiguration(masterConfigFile))
         }
+        this.variableManager = VariableManager()
     }
 
 
     final override fun onEnable() {
         /*
-         * Load plugin
+         * Load prefix
          */
-        pluginLogger.log("Loading plugin...")
+        pluginLogger.log("Loading prefix...")
         val start = System.currentTimeMillis()
         chainFactory.enable()
         /*
          * First of all we load the config manager, as it is the primary
-         * source for resources used by the plugin.
-         * Then, we use it to load the plugin's color design
+         * source for resources used by the prefix.
+         * Then, we use it to load the prefix's color design
          */
         this.configManager = loadConfigManager()
         configManager.enable()
@@ -126,7 +130,7 @@ abstract class AbstractPlugin<M : MessageManager, C : ConfigManager<*>> : JavaPl
         if (tempColorDesign != null) {
             return tempColorDesign
         } else {
-            pluginLogger.log("Plugin returned a null color design! Using the Shiroi default color design, notify the plugin author!",
+            pluginLogger.log("Plugin returned a null color design! Using the Shiroi default color design, notify the prefix author!",
                     DebugLevel.FUCK_MAN_SOUND_THE_ALARMS)
             return PluginColorDesign.SHIROI_COLOR_DESIGN
         }
@@ -181,6 +185,17 @@ abstract class AbstractPlugin<M : MessageManager, C : ConfigManager<*>> : JavaPl
     override fun registerListener(listener: Listener) = Bukkit.getPluginManager().registerEvents(listener, this)
 
     override fun unregisterListener(listener: Listener) = HandlerList.unregisterAll(listener)
+
+    override fun reload(sender: CommandSender) {
+        messageManager.sendMessage(sender, "Reloading ConfigManager...")
+        configManager.reload(sender)
+        colorDesign = tryLoadColorDesign()
+        messageManager.sendMessage(sender, "Using ColorDesign: ${colorDesign.demonstration}")
+        messageManager.sendMessage(sender, "Reloading MessageManager...")
+        messageManager.reload(sender)
+        messageManager.sendMessage(sender, "Reloading CommandManager...")
+        commandManager.reload(sender)
+    }
 
     override fun reload() {
         /*

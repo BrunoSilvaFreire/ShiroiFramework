@@ -8,7 +8,6 @@ import me.ddevil.util.vector.IntVector2
  * @see me.ddevil.shiroi.ui.api.component.container.Container
  */
 class UIPosition(x: Int, y: Int) : IntVector2(x, y) {
-
     /**
      * Converts this position to a int representing the slot it would be located in
      * a container with the specified [width].
@@ -30,6 +29,22 @@ class UIPosition(x: Int, y: Int) : IntVector2(x, y) {
     operator fun minus(position: UIPosition) = UIPosition(x - position.x, y - position.y)
 
     override fun toString() = "UIPosition{x=$x, y=$y}"
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+        if (other !is UIPosition) {
+            return false
+        }
+        return x == other.x && y == other.y
+    }
+
+    override fun hashCode(): Int {
+        var result = x
+        result = 31 * result + y
+        return result
+    }
 
     companion object {
         @JvmOverloads

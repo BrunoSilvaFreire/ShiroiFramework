@@ -26,8 +26,8 @@ constructor(
 
     init {
         addListener(object : HolderClickListener<Drawable> {
-            override fun onClick(drawable: Drawable) {
-                drawChild(drawable)
+            override fun onClick(drawable: Drawable?) {
+                drawChild(drawable ?: return)
             }
         })
     }

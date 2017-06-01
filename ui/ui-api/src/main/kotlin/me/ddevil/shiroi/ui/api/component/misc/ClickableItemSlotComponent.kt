@@ -5,6 +5,7 @@ import me.ddevil.shiroi.ui.api.misc.Action
 import me.ddevil.shiroi.ui.api.updater.ItemUpdater
 import org.bukkit.inventory.ItemStack
 
+
 open class ClickableItemSlotComponent : Clickable, ItemSlotComponent {
     final override val action: Action
 
@@ -17,4 +18,5 @@ open class ClickableItemSlotComponent : Clickable, ItemSlotComponent {
     constructor(icon: ItemStack, id: String?, action: Action) : super(icon, id) {
         this.action = action
     }
+
 }
