@@ -85,7 +85,7 @@ class CommandArgs(
     @JvmOverloads
     inline fun joinFromAnd(start: Int, end: Int = args.size - 1, action: (String) -> Unit) {
         var istart = start
-        if (length() > start) {
+        if (length() >= start) {
             action("")
             return
         }

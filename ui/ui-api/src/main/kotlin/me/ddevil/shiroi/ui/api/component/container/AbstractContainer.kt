@@ -138,9 +138,9 @@ constructor(
 
     //</editor-fold>
     init {
-        this.handler = ContainerHandler(this) { drawable ->
+        this.handler = ContainerHandler(this) { drawable, event ->
             for (listener in listeners) {
-                listener.onClick(drawable)
+                listener.onClick(drawable, event)
             }
         }
     }
@@ -180,7 +180,7 @@ constructor(
                         if (debug) {
                             println("Drawing child component $uiObject  @ $currentPos")
                         }
-                    } else {
+                    } else if (debug) {
                         println("Found object $uiObject  @ $currentPos, but was already drawn, skipping.")
                     }
                 } else if (hasBackground()) {

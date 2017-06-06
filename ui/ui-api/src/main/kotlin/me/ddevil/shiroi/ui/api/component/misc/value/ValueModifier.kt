@@ -1,25 +1,14 @@
 package me.ddevil.shiroi.ui.api.component.misc.value
 
-import me.ddevil.shiroi.ui.api.UIPosition
 import me.ddevil.shiroi.ui.api.component.Clickable
 import me.ddevil.shiroi.ui.api.component.misc.ItemSlotComponent
-import me.ddevil.shiroi.ui.api.event.UIClickEvent
-import me.ddevil.shiroi.ui.api.misc.Action
 import me.ddevil.shiroi.ui.api.updater.ItemUpdater
 import org.bukkit.inventory.ItemStack
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
 
-class ValueModifier<T> : ItemSlotComponent, Clickable {
-    override val action: Action = createAction()
-
-    private fun createAction(): Action {
-        return object : Action {
-            override fun invoke(p1: UIClickEvent, p2: UIPosition) {
-            }
-        }
-    }
+abstract class ValueModifier<T> : ItemSlotComponent, Clickable {
 
     private var value: T by ModifierDelegate()
     private val getter: () -> T

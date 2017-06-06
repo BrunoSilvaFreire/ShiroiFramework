@@ -92,7 +92,7 @@ constructor(
                 }
             }
             for (listener in listeners) {
-                listener.onClick(pageObj)
+                listener.onClick(pageObj, e)
             }
 
         }

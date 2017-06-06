@@ -7,6 +7,7 @@ import me.ddevil.shiroi.ui.api.component.container.ArrayContainer
 import me.ddevil.shiroi.ui.api.component.container.Menu
 import me.ddevil.shiroi.ui.api.component.container.MenuSize
 import me.ddevil.shiroi.ui.api.component.holder.HolderClickListener
+import me.ddevil.shiroi.ui.api.event.UIClickEvent
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
@@ -26,7 +27,8 @@ constructor(
 
     init {
         addListener(object : HolderClickListener<Drawable> {
-            override fun onClick(drawable: Drawable?) {
+            override fun onClick(drawable: Drawable?,
+                                 event: UIClickEvent) {
                 drawChild(drawable ?: return)
             }
         })

@@ -35,7 +35,7 @@ constructor(
                 }
             }
             for (listener in listeners) {
-                listener.onClick(obj)
+                listener.onClick(obj, e)
             }
         }
     }

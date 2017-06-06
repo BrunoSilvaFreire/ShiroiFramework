@@ -11,6 +11,12 @@ fun createConfig(serializable: Serializable) = createConfig(serializable.seriali
 
 fun Map<String, Any>.toConfig() = createConfig(this)
 
+fun createConfig(init: ConfigurationSection.() -> (Unit)): MemoryConfiguration {
+    val config = MemoryConfiguration()
+    config.init()
+    return config
+}
+
 fun createConfig(map: Map<String, Any>): ConfigurationSection {
     val config = MemoryConfiguration()
     config.set(map)
@@ -52,6 +58,7 @@ inline fun <reified T : Any> ConfigurationSection.getOrElse(key: String, default
     val get = this[key] ?: default
     return (get as? T) ?: throw IllegalValueTypeException(T::class.java, get.javaClass)
 }
+
 fun ConfigurationSection.toMap(): Map<String, Any> {
     val map = HashMap<String, Any>()
     for ((key, value) in this.getValues(false)) {

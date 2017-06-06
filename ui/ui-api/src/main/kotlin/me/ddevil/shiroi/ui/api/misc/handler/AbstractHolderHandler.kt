@@ -10,7 +10,7 @@ import me.ddevil.shiroi.ui.api.event.UIClickEvent
 import me.ddevil.shiroi.ui.api.misc.Action
 
 abstract class AbstractHolderHandler<in H : Holder<D>, D : Drawable>(private val container: H,
-                                                                     private val onClickAction: ((D?) -> Unit)?) : Action {
+                                                                     private val onClickAction: ((D?, UIClickEvent) -> Unit)?) : Action {
 
     override fun invoke(e: UIClickEvent, localPosition: UIPosition) {
         if (hasObjectIn(container, localPosition)) {
@@ -28,9 +28,9 @@ abstract class AbstractHolderHandler<in H : Holder<D>, D : Drawable>(private val
                 action.invoke(e, objLocalPos)
                 UIActionEvent(c, e.clickedSlot, e.player, e.clickType, e.placedBlock).call()
             }
-            onClickAction?.invoke(drawable)
+            onClickAction?.invoke(drawable, e)
         }
-        onClickAction?.invoke(null)
+        onClickAction?.invoke(null, e)
     }
 
     protected abstract fun getPosition(container: H, `object`: D): UIPosition
