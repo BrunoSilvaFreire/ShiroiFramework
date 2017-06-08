@@ -25,7 +25,8 @@ constructor(
 
     override val action: Action
 
-    override fun updateIcon(updater: ScrollerUpdater<O>): ItemStack {
+    override fun updateIcon(updater: ScrollerUpdater<O>,
+                            oldItem: ItemStack): ItemStack {
         return updater.update(parent, direction)
     }
 

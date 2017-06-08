@@ -17,6 +17,7 @@ abstract class AbstractSlotComponent<U : Updater>
     constructor(updater: U, initialIcon: ItemStack, id: String? = null) : super(id) {
         this.icon = initialIcon
         this.updater = updater
+        this.icon = updateIcon(updater, icon)
     }
 
     constructor(icon: ItemStack, id: String?) : super(id) {
@@ -25,8 +26,9 @@ abstract class AbstractSlotComponent<U : Updater>
     }
 
     override fun update() {
-        if (hasUpdater()) {
-            this.icon = updateIcon(updater!!)
+        val up = updater
+        if (up != null) {
+            this.icon = updateIcon(up, icon)
         }
     }
 
@@ -35,7 +37,8 @@ abstract class AbstractSlotComponent<U : Updater>
             .build()
 
     override fun hasUpdater() = updater != null
-    protected abstract fun updateIcon(updater: U): ItemStack
+
+    protected abstract fun updateIcon(updater: U, oldItem: ItemStack): ItemStack
 
     override fun draw(from: UIPosition, to: UIPosition) = draw(from.x, to.x, from.y, to.y)
 

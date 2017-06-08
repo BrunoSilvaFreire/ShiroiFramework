@@ -7,5 +7,6 @@ open class ItemSlotComponent : AbstractSlotComponent<ItemUpdater> {
     constructor(updater: ItemUpdater, defaultIcon: ItemStack, id: String?) : super(updater, defaultIcon, id)
     constructor(icon: ItemStack, id: String?) : super(icon, id)
 
-    override fun updateIcon(updater: ItemUpdater) = updater.update(icon)
+    override fun updateIcon(updater: ItemUpdater,
+                            oldItem: ItemStack) = updater.update(oldItem)
 }
