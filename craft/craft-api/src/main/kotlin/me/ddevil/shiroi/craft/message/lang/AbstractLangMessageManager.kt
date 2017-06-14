@@ -4,6 +4,7 @@ import me.ddevil.shiroi.craft.config.ConfigValue
 import me.ddevil.shiroi.craft.message.SimpleMessageManager
 import me.ddevil.shiroi.craft.misc.variable.MessageVariable
 import me.ddevil.shiroi.craft.misc.variable.VariableProvider
+import me.ddevil.shiroi.craft.misc.variable.translateVariables
 import me.ddevil.shiroi.craft.plugin.ShiroiPlugin
 import org.bukkit.command.CommandSender
 
@@ -21,6 +22,6 @@ constructor(
     }
 
     override fun sendMessage(sender: CommandSender, message: Lang<V>, vararg variables: MessageVariable) {
-        sendMessage(sender, message.translate(getLang(message), *variables))
+        sendMessage(sender, translateVariables(getLang(message), *variables))
     }
 }

@@ -9,12 +9,12 @@ class BooleanValueModifier : ScrollingValueModifier<Boolean> {
                 setter: (Boolean) -> Unit,
                 defaultIcon: ItemStack,
                 updater: ValueModifierUpdater<Boolean>,
-                id: String?,
-                initIndex: Int) : super(BOOLEAN_VALUES, getter, setter, defaultIcon, updater, id, initIndex)
+                initIndex: Int = 0,
+                id: String? = null) : super(BOOLEAN_VALUES, getter, setter, defaultIcon, updater, id, initIndex)
 
-    constructor(icon: ItemStack,
-                getter: () -> Boolean,
+    constructor(getter: () -> Boolean,
                 setter: (Boolean) -> Unit,
-                id: String?,
-                initIndex: Int) : super(BOOLEAN_VALUES, icon, getter, setter, id, initIndex)
+                icon: ItemStack,
+                initIndex: Int = 0,
+                id: String? = null) : super(BOOLEAN_VALUES, icon, getter, setter, id, initIndex)
 }

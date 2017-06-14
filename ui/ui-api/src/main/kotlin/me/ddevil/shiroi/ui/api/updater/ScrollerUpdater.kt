@@ -8,5 +8,7 @@ import org.bukkit.inventory.ItemStack
  * Created by bruno on 05/10/2016.
  */
 interface ScrollerUpdater<in O : Scrollable<*>> : Updater {
-    fun update(scrollable: O, direction: ScrollDirection): ItemStack
+    fun update(oldIcon: ItemStack,
+               scrollable: O,
+               direction: ScrollDirection): ItemStack
 }

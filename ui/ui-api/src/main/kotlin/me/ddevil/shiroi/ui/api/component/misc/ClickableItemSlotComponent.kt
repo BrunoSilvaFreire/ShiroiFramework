@@ -9,7 +9,11 @@ import org.bukkit.inventory.ItemStack
 open class ClickableItemSlotComponent : Clickable, ItemSlotComponent {
     final override val action: Action
 
-    constructor(updater: ItemUpdater, defaultIcon: ItemStack, id: String?, action: Action) : super(updater,
+    @JvmOverloads
+    constructor(updater: ItemUpdater,
+                defaultIcon: ItemStack,
+                action: Action,
+                id: String? = null) : super(updater,
             defaultIcon,
             id) {
         this.action = action

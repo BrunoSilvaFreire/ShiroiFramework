@@ -17,7 +17,6 @@ abstract class AbstractSlotComponent<U : Updater>
     constructor(updater: U, initialIcon: ItemStack, id: String? = null) : super(id) {
         this.icon = initialIcon
         this.updater = updater
-        this.icon = updateIcon(updater, icon)
     }
 
     constructor(icon: ItemStack, id: String?) : super(id) {

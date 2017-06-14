@@ -16,8 +16,8 @@ class BackButton : ClickableItemSlotComponent {
     @JvmOverloads
     constructor(updater: ItemUpdater, returningMenu: Menu<*>, id: String? = null) : super(updater,
             ItemStack(Material.EMERALD),
-            id,
-            BackAction(returningMenu)) {
+            BackAction(returningMenu),
+            id) {
         this.returningMenu = returningMenu
     }
 

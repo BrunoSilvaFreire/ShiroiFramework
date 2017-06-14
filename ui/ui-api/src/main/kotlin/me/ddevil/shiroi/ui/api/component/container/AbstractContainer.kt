@@ -94,6 +94,7 @@ constructor(
                     addAreaObject(drawable, position)
                 } else {
                     place0(drawable, position)
+                    drawable.update()
                 }
             } else {
                 throw PositionAlreadyOccupiedException(position, found)

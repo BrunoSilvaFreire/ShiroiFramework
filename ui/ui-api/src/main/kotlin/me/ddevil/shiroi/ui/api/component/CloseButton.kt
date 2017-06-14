@@ -13,8 +13,8 @@ class CloseButton : ClickableItemSlotComponent {
     @JvmOverloads
     constructor(updater: ItemUpdater, id: String? = null) : super(updater,
             ItemStack(Material.BARRIER),
-            id,
-            CloseAction())
+            CloseAction(),
+            id)
 
     @JvmOverloads
     constructor(icon: ItemStack, id: String? = null) : super(icon, id, CloseAction())

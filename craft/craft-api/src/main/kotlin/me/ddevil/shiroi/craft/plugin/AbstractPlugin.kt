@@ -106,7 +106,7 @@ abstract class AbstractPlugin<M : MessageManager, C : ConfigManager<*>> : JavaPl
 
         /*
          * Now we load the message manager and command manager, as the
-         * color design is loaded and it's safe to translate it.
+         * color design is loaded and it's safe to translateVariables it.
          */
         this.messageManager = loadMessageManager()
         messageManager.enable()

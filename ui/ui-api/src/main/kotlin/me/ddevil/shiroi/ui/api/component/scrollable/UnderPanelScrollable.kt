@@ -119,6 +119,7 @@ constructor(
                 if (uiObject != null) {
                     if (uiObject !in addedObjects) {
                         addedObjects.add(uiObject)
+                        uiObject.update()
                         val childUI = uiObject.draw()
                         for ((childPos, item) in childUI) {
                             builder.put(childPos + currentPos, item)
@@ -127,7 +128,7 @@ constructor(
                         if (debug) {
                             println("Drawing child component $uiObject  @ $currentPos")
                         }
-                    } else {
+                    } else if (debug) {
                         println("Found object $uiObject  @ $currentPos, but was already drawn, skipping.")
                     }
                 } else if (hasBackground()) {
@@ -147,11 +148,17 @@ constructor(
                     break
                 }
                 val panelObj = lowPanel[x]
+                val currentPos = UIPosition(x, maxY)
                 if (panelObj != null) {
-                    val currentPos = UIPosition(x, maxY)
+                    panelObj.update()
                     val childUI = panelObj.draw()
                     for ((childPos, item) in childUI) {
                         builder.put(childPos + currentPos, item)
+                    }
+                } else {
+                    val lpb = lowPanelBackground
+                    if (lpb != null) {
+                        builder.put(currentPos, lpb)
                     }
                 }
             }

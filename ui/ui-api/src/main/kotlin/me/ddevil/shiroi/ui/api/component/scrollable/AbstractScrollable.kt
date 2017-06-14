@@ -79,7 +79,9 @@ constructor(
     }
 
     override fun update() {
-        currentPage.values.forEach { it.update() }
+        for (it in currentPage.values) {
+            it.update()
+        }
     }
 
 
@@ -131,9 +133,8 @@ constructor(
 
     override fun place(component: D, position: Int) {
         if (canPlaceIn(position)) {
-            synchronized(positionMap) {
-                positionMap.put(position, component)
-            }
+            positionMap[position] = component
+            component.update()
             recalculateCurrentPage()
         } else {
             throw IllegalStateException("There is already an object in position $position!")

@@ -38,7 +38,7 @@ open class Item : Serializable {
 
     override fun serialize(): Map<String, Any> {
         val map = ImmutableMap.builder<String, Any>()
-                .put(DEFAULT_SHIROI_ITEM_TYPE_IDENTIFIER, material)
+                .put(DEFAULT_SHIROI_ITEM_TYPE_IDENTIFIER, material.name)
         if (data > 0) {
             map.put(DEFAULT_SHIROI_ITEM_DATA_IDENTIFIER, data)
         }

@@ -9,7 +9,7 @@ import org.bukkit.Bukkit
 import org.bukkit.event.EventHandler
 import org.bukkit.inventory.ItemStack
 
-abstract class ShiroiMenu<out P : ShiroiPlugin<*, *>>
+open class ShiroiMenu<out P : ShiroiPlugin<*, *>>
 @JvmOverloads
 constructor(
         plugin: P,
@@ -18,6 +18,7 @@ constructor(
         background: ItemStack? = null,
         id: String? = null
 ) : IndependentMenu<P>(plugin, parseTitle(title, plugin.messageManager), size, background, id) {
+
     private val initialTitle: String? = title
 
     companion object {

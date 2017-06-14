@@ -27,7 +27,7 @@ constructor(
 
     override fun updateIcon(updater: ScrollerUpdater<O>,
                             oldItem: ItemStack): ItemStack {
-        return updater.update(parent, direction)
+        return updater.update(oldItem, parent, direction)
     }
 
     init {

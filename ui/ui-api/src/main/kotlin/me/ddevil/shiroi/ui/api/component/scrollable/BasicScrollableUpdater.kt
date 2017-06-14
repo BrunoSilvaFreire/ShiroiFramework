@@ -38,8 +38,10 @@ class BasicScrollableUpdater(private val icon: ItemStack,
                 secondary: ChatColor,
                 neutral: ChatColor) : this(ItemStack(icon), next, previous, primary, secondary, neutral)
 
-    override fun update(scrollable: Scrollable<*>, direction: ScrollDirection): ItemStack {
-        val item = ItemStack(icon)
+    override fun update(oldIcon: ItemStack,
+                        scrollable: Scrollable<*>,
+                        direction: ScrollDirection): ItemStack {
+        val item = ItemStack(oldIcon)
         val itemMeta = item.itemMeta
         itemMeta.displayName = primary.toString() + if (direction == ScrollDirection.NEXT) next else previous
         itemMeta.lore = listOf(primary.toString() + (scrollable.currentIndex + 1) + neutral + "/" + secondary + scrollable.totalPages)

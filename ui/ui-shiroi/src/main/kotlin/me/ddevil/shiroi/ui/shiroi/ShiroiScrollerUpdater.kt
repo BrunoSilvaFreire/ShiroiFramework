@@ -35,8 +35,10 @@ class ShiroiScrollerUpdater : ScrollerUpdater<Scrollable<*>> {
         this.previous = previous
     }
 
-    override fun update(scrollable: Scrollable<*>, direction: ScrollDirection): ItemStack {
-        return ShiroiItemBuilder(messageManager, ItemStack(icon))
+    override fun update(oldIcon: ItemStack,
+                        scrollable: Scrollable<*>,
+                        direction: ScrollDirection): ItemStack {
+        return ShiroiItemBuilder(messageManager, ItemStack(oldIcon))
                 .setName(MessageColor.PRIMARY.toString() + if (direction === ScrollDirection.NEXT) next else previous)
                 .setLore(listOf(MessageColor.PRIMARY.toString() + (scrollable.currentIndex + 1) + MessageColor.NEUTRAL + "/" + MessageColor.SECONDARY + scrollable.totalPages))
                 .build()

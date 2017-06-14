@@ -58,7 +58,7 @@ class CommandArgs(
     /**
      * Gets the argument at the specified index
 
-     * @param index The index to translate
+     * @param index The index to translateVariables
      * *
      * @return The string at the specified index
      */
