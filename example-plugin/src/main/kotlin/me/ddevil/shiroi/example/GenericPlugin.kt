@@ -3,6 +3,7 @@ package me.ddevil.shiroi.example
 import me.ddevil.shiroi.craft.config.YAMLFileConfigManager
 import me.ddevil.shiroi.craft.message.SimpleMessageManager
 import me.ddevil.shiroi.craft.misc.variable.MessageVariable
+import me.ddevil.shiroi.craft.misc.variable.SingleVariableProvider
 import me.ddevil.shiroi.craft.misc.variable.VariableProvider
 import me.ddevil.shiroi.craft.plugin.AbstractPlugin
 import me.ddevil.shiroi.craft.plugin.PluginSettings
@@ -34,7 +35,7 @@ class GenericPlugin : AbstractPlugin<SimpleMessageManager, YAMLFileConfigManager
 
 }
 
-class DateVariableProvider : VariableProvider {
-    override fun provide() = MessageVariable("date", System.currentTimeMillis().toString())
+class DateVariableProvider : SingleVariableProvider() {
+    override val variable= MessageVariable("date", System.currentTimeMillis().toString())
 
 }

@@ -23,7 +23,6 @@ buildscript {
 }
 
 def notToPublish = Arrays.asList(["server", "commons"] as String[])
-
 setup(rootProject)
 
 def setup(project) {

@@ -289,6 +289,10 @@ class CommandArgs(
      */
     fun length() = args.size
 
+    fun sendUsage() {
+        plugin.messageManager.sendMessage(sender, "$4${command.usage}")
+    }
+
     val isPlayer: Boolean
         get() = sender is Player
 

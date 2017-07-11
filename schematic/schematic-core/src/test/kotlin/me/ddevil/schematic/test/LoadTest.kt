@@ -9,6 +9,9 @@ class LoadTest {
     @Test
     fun deserialize() {
         val file = File("C:/Work/projects/shiroi-remake/schematic/schematic-core/src/test/resources/example.schematic")
+        if (!file.exists()) {
+            return
+        }
         val schematic = SimpleSchematic(file)
 
         println(JsonObject(schematic.serialize()).toJson())

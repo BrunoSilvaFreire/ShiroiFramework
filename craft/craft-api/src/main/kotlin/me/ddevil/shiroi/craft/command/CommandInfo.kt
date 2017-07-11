@@ -2,9 +2,6 @@ package me.ddevil.shiroi.craft.command
 
 import java.lang.reflect.Method
 
-/**
- * Created by bruno on 10/12/2016.
- */
 class CommandInfo(val method: Method,
                   val owner: ShiroiCommand<*>,
                   val name: String,

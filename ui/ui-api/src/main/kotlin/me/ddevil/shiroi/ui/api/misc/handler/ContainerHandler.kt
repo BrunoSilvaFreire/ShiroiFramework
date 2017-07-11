@@ -5,10 +5,10 @@ import me.ddevil.shiroi.ui.api.component.Drawable
 import me.ddevil.shiroi.ui.api.component.container.Container
 import me.ddevil.shiroi.ui.api.event.UIClickEvent
 
-class ContainerHandler<D : Drawable>(container: Container<D>,
-                                     onClickAction: ((D?, UIClickEvent) -> Unit)?) : AbstractHolderHandler<Container<D>, D>(
-        container,
-        onClickAction) {
+class ContainerHandler<D : Drawable>(
+        container: Container<D>,
+        onClickAction: ((D?, UIClickEvent) -> Unit)?
+) : AbstractHolderHandler<Container<D>, D>(container, onClickAction) {
 
     override fun getPosition(container: Container<D>, component: D): UIPosition {
         return container.getPosition(component) ?: throw IllegalStateException("Couldn't find position for component $component")

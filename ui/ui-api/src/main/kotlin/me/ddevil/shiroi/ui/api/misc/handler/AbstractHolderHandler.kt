@@ -13,6 +13,7 @@ abstract class AbstractHolderHandler<in H : Holder<D>, D : Drawable>(private val
                                                                      private val onClickAction: ((D?, UIClickEvent) -> Unit)?) : Action {
 
     override fun invoke(e: UIClickEvent, localPosition: UIPosition) {
+        var target: D? = null
         if (hasObjectIn(container, localPosition)) {
             val drawable = getDrawable(container, localPosition)
             drawable.update()
@@ -28,9 +29,10 @@ abstract class AbstractHolderHandler<in H : Holder<D>, D : Drawable>(private val
                 action.invoke(e, objLocalPos)
                 UIActionEvent(c, e.clickedSlot, e.player, e.clickType, e.placedBlock).call()
             }
-            onClickAction?.invoke(drawable, e)
+            target = drawable
         }
-        onClickAction?.invoke(null, e)
+        onClickAction?.invoke(target, e)
+        container.update()
     }
 
     protected abstract fun getPosition(container: H, `object`: D): UIPosition

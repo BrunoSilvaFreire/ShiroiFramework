@@ -26,6 +26,7 @@ open class SimpleCommandManager(val plugin: ShiroiPlugin<*, *>) : CommandManager
 
     override fun reload(sender: CommandSender) {
     }
+
     override fun reload() {
     }
 
@@ -58,7 +59,7 @@ open class SimpleCommandManager(val plugin: ShiroiPlugin<*, *>) : CommandManager
         commands.put("${this.plugin.name}:$label", command)
         val cmdLabel = label.split("\\.".toRegex()).dropLastWhile(String::isEmpty).toTypedArray()[0].toLowerCase()
         if (commandMap.getCommand(cmdLabel) == null) {
-            val cmd = BukkitCommand(cmdLabel, this, this, plugin)
+            val cmd = BukkitCommand(cmdLabel, command.usage, command.description, this, this, plugin)
             cmd.description = command.description
             cmd.usage = command.usage
             commandMap.register(plugin.name, cmd)
@@ -155,13 +156,14 @@ open class SimpleCommandManager(val plugin: ShiroiPlugin<*, *>) : CommandManager
     }
 }
 
-class BukkitCommand constructor(label: String,
-                                private val executor: CommandExecutor,
-                                val completer: TabCompleter,
-                                private val owningPlugin: ShiroiPlugin<*, *>) : org.bukkit.command.Command(label) {
-    init {
-        this.usageMessage = ""
-    }
+class BukkitCommand constructor(
+        label: String,
+        usage: String,
+        descp: String,
+        private val executor: CommandExecutor,
+        val completer: TabCompleter,
+        private val owningPlugin: ShiroiPlugin<*, *>
+) : org.bukkit.command.Command(label, descp, usage, emptyList()) {
 
     override fun tabComplete(sender: CommandSender?,
                              alias: String?,

@@ -43,7 +43,8 @@ constructor(
                 PluginPrefixVariableProvider.PREFIX_VARIABLE_NAME,
                 MessageSeparatorVariableProvider.SEPARATOR_VARIABLE_NAME
         )
-        this.providers = listOf(*providers.filter { !reservedNames.contains(it.provide().name) }.toTypedArray(),
+        this.providers = listOf(
+                *providers.filter { !it.provide().any { va -> reservedNames.contains(va.name) } }.toTypedArray(),
                 PluginPrefixVariableProvider(pluginPrefix),
                 MessageSeparatorVariableProvider(messageSeparator)
         )
@@ -69,10 +70,12 @@ constructor(
     override fun translateTags(input: String): String {
         var final = input
         for (translator in providers) {
-            val variable = translator.provide()
-            val tag = variable.replacer
-            if (final.contains(tag)) {
-                final = final.replace(tag, variable.value)
+            val variables = translator.provide()
+            for (variable in variables) {
+                val tag = variable.replacer
+                if (final.contains(tag)) {
+                    final = final.replace(tag, variable.value)
+                }
             }
         }
         return final

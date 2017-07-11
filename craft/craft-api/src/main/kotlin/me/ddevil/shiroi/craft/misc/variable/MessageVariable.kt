@@ -8,6 +8,10 @@ fun translateVariables(string: String, vararg variables: MessageVariable): Strin
     return modified
 }
 
+fun translateVariables(strings: Iterable<String>, vararg variables: MessageVariable) = strings.map {
+    translateVariables(it, *variables)
+}
+
 class MessageVariable(val name: String, val value: String) {
     val replacer get() = "{$name}"
 

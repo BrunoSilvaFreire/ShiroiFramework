@@ -52,7 +52,7 @@ constructor(
                                 type,
                                 null
                         ).call()
-                        action.invoke(call, position)
+                        action(call, position)
                     }
                 }
             }

@@ -5,7 +5,7 @@ import me.ddevil.shiroi.ui.api.event.UIClickEvent
 import me.ddevil.shiroi.ui.api.misc.Action
 import org.bukkit.inventory.ItemStack
 
-open class ScrollingValueModifier<T> : ValueModifier<T> {
+open class ScrollingValueModifier<T> : AbstractValueModifier<T> {
 
 
     inner class ScrollingAction : Action {
@@ -40,7 +40,7 @@ open class ScrollingValueModifier<T> : ValueModifier<T> {
             updater: ValueModifierUpdater<T>,
             id: String? = null,
             initIndex: Int = 0
-    ) : super(updater, defaultIcon, id, getter, setter) {
+    ) : super(getter, setter, updater, defaultIcon, id) {
         this.items = items.toList()
         this.currentIndex = initIndex
     }
@@ -48,10 +48,10 @@ open class ScrollingValueModifier<T> : ValueModifier<T> {
     constructor(items: Iterable<T>, icon: ItemStack, getter: () -> T, setter: (T) -> Unit,
                 id: String? = null,
                 initIndex: Int = 0) : super(
-            icon,
-            id,
             getter,
-            setter) {
+            setter,
+            icon,
+            id) {
         this.items = items.toList()
         this.currentIndex = initIndex
     }
