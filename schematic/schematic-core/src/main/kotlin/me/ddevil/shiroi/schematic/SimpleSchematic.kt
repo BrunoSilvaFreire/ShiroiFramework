@@ -1,8 +1,8 @@
 package me.ddevil.shiroi.schematic
 
 import com.google.common.collect.ImmutableMap
-import me.ddevil.util.vector.IntVector3
-import me.ddevil.util.vector.Vector3
+import me.ddevil.util.math.vector.IntVector3
+import me.ddevil.util.math.vector.Vector3
 import org.jnbt.*
 import java.io.File
 import java.io.FileInputStream

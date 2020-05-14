@@ -1,7 +1,7 @@
 package me.ddevil.shiroi.ui.api
 
 import me.ddevil.shiroi.ui.api.component.container.Container
-import me.ddevil.util.vector.IntVector2
+import me.ddevil.util.math.vector.IntVector2
 
 /**
  * Represents a position in a [me.ddevil.shiroi.ui.api.component.container.Container].

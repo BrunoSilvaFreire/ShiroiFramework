@@ -1,7 +1,7 @@
 package me.ddevil.shiroi.schematic
 
-import me.ddevil.util.vector.IntVector3
-import me.ddevil.util.vector.Vector3
+import me.ddevil.util.math.vector.IntVector3
+import me.ddevil.util.math.vector.Vector3
 
 enum class SchematicRotation {
     FORWARD {

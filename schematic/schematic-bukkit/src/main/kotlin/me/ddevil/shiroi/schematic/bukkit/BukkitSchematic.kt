@@ -4,7 +4,7 @@ import me.ddevil.shiroi.schematic.MaterialType
 import me.ddevil.shiroi.schematic.PlaceableSchematic
 import me.ddevil.shiroi.schematic.SchematicRotation
 import me.ddevil.shiroi.schematic.SimpleSchematic
-import me.ddevil.util.vector.Vector3
+import me.ddevil.util.math.vector.Vector3
 import org.bukkit.Bukkit
 import org.jnbt.CompoundTag
 import java.io.File

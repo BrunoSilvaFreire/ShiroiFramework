@@ -5,10 +5,8 @@ import me.ddevil.shiroi.util.misc.item.Item
 import me.ddevil.shiroi.util.misc.item.ItemStack
 import me.ddevil.shiroi.util.misc.item.Material
 import me.ddevil.util.degreesToRad
+import me.ddevil.util.math.vector.*
 import me.ddevil.util.radToDegrees
-import me.ddevil.util.vector.DoubleVector3
-import me.ddevil.util.vector.Vector2
-import me.ddevil.util.vector.Vector3
 import org.bukkit.Location
 import org.bukkit.World
 import org.bukkit.event.block.Action

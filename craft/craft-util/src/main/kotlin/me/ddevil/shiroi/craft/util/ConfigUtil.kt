@@ -5,7 +5,6 @@ import me.ddevil.util.exception.IllegalValueTypeException
 import me.ddevil.util.exception.ValueNotFoundException
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.configuration.MemoryConfiguration
-import java.util.*
 
 fun createConfig(serializable: Serializable) = createConfig(serializable.serialize())
 
@@ -17,13 +16,13 @@ fun createConfig(init: ConfigurationSection.() -> (Unit)): MemoryConfiguration {
     return config
 }
 
-fun createConfig(map: Map<String, Any>): ConfigurationSection {
+fun createConfig(map: Map<String, Any?>): ConfigurationSection {
     val config = MemoryConfiguration()
     config.set(map)
     return config
 }
 
-fun ConfigurationSection.set(map: Map<String, Any>) {
+fun ConfigurationSection.set(map: Map<String, Any?>) {
     map.forEach {
         this[it.key] = it.value
     }

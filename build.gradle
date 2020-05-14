@@ -4,7 +4,7 @@ allprojects {
     version '3.3.0-SNAPSHOT'
 }
 buildscript {
-    ext.kotlin_version = '1.1.2-3'
+    ext.kotlin_version = '1.3.72'
 
     repositories {
         mavenCentral()
@@ -30,7 +30,7 @@ def setup(project) {
     if (project.childProjects.isEmpty()) {
         project.plugins.apply('maven-publish')
         project.plugins.apply('java')
-        project.plugins.apply('kotlin')
+        project.plugins.apply('org.jetbrains.kotlin.jvm')
         project.sourceCompatibility = 1.8
         project.targetCompatibility = 1.8
         project.compileJava.options.encoding = 'UTF-8'
@@ -58,6 +58,9 @@ def setup(project) {
             maven { url 'http://maven.angry.com.au/release' }
             //Task Chain
             maven { url 'http://ci.emc.gs/nexus/content/groups/aikar/' }
+            maven {
+                url 'https://repo.lunari.studio/repository/maven-public/'
+            }
         }
 
         project.tasks.withType(Jar) {
